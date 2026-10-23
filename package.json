@@ -1,0 +1,24 @@
+{
+  "name": "salento-dev-brand",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Salento.dev design system as code: grafiche della community generate da dati YAML versionati.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "schema": "node scripts/schema.js",
+    "validate": "node scripts/validate.js",
+    "generate": "node scripts/generate.js",
+    "gallery": "node scripts/gallery.js",
+    "check-expired": "node scripts/check-expired.js",
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "2.6.2",
+    "js-yaml": "5.5.0",
+    "zod": "4.6.7"
+  }
+}

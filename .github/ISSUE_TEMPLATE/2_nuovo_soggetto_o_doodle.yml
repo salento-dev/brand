@@ -1,0 +1,49 @@
+name: 🎨 Nuovo soggetto o doodle
+description: Proponi o richiedi un soggetto per l'icona di un gruppo, o un doodle per lo sfondo
+title: "[Soggetto/Doodle]: "
+labels: ["illustrazione"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Prima di disegnare leggi le guide:
+        [Soggetti](https://github.com/salento-dev/brand/blob/main/docs/02_icone_gruppi/02_soggetti.md) — viewBox 160, solo i 4 colori segnaposto `#ff00ff` `#800080` `#ffffff` `#000000`;
+        [Doodle](https://github.com/salento-dev/brand/blob/main/docs/02_icone_gruppi/03_doodle.md) — viewBox 96, solo tratto `currentColor`, capi tondi.
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo
+      options:
+        - soggetto (illustrazione flat al centro dell'icona)
+        - doodle (disegno a tratto per lo sfondo)
+    validations:
+      required: true
+  - type: input
+    id: nome
+    attributes:
+      label: Nome file
+      description: kebab-case in inglese, senza estensione.
+      placeholder: coffee-cup
+    validations:
+      required: true
+  - type: input
+    id: gruppo
+    attributes:
+      label: Gruppo che lo userà
+      placeholder: Dev Break
+  - type: textarea
+    id: idea
+    attributes:
+      label: Idea / soggetto
+      description: Cosa rappresenta? Allega bozze o riferimenti se li hai.
+    validations:
+      required: true
+  - type: checkboxes
+    id: conferme
+    attributes:
+      label: Conferme
+      options:
+        - label: Il disegno è originale o con licenza compatibile (indicata nel file), senza loghi di terzi
+          required: true
+        - label: Ho cercato tra le issue esistenti e non è un duplicato
+          required: true

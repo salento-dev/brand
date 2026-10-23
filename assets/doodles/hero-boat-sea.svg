@@ -1,0 +1,18 @@
+<!-- boat-sea — scena, disegnata a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18 92 C48 96 104 96 142 90 C136 104 124 112 108 114 C86 116 64 116 46 114 C32 112 22 104 18 92 Z"/>
+  <path data-w=".6" d="M26 103 C56 106 100 106 134 101"/>
+  <path d="M76 93 C76.6 70 77 46 76.6 20"/>
+  <path d="M80.6 22 C96 40 108 62 114 86 C102 88 92 88.6 81 88.4 C81.6 66 81.4 44 80.6 22 Z" fill="currentColor" fill-opacity=".25"/>
+  <path d="M72.4 34 C62 50 54 68 48 86 C56 87.6 64 88 72.6 87.6 C73 70 72.8 52 72.4 34 Z"/>
+  <path data-w=".8" d="M76.6 20 C80 17 84 19.4 88 17"/>
+  <path d="M4 124 C10 118 18 118 24 123 C30 128 38 128 44 123 C50 118 58 118 64 123 C70 128 78 128 84 123 C90 118 98 118 104 123 C110 128 118 128 124 123 C130 118 138 118 144 123 C148 126.4 152 127 156 125"/>
+  <path data-w=".8" d="M16 142 C22 137 29 137 34 141 C39 145 46 145 51 141 M88 144 C94 139 101 139 106 143 C111 147 118 147 123 143"/>
+  <path d="M128 74 C129 64 136 57 146 56 C150 62 150 70 144 76 C139 80.6 133 80 128 74 Z"/>
+  <path d="M128 74 C123 74 120 77 118 81 C122.6 81.6 125.4 80 127 78"/>
+  <circle cx="142.4" cy="62.6" r="1.6" fill="currentColor" stroke="none"/>
+  <circle cx="117" cy="92" r="1.6" fill="currentColor" stroke="none"/>
+  <circle cx="153" cy="86" r="1.4" fill="currentColor" stroke="none"/>
+  <path d="M20 30 C24 26 28 26 31 30.6 C34 26 38 26 42 30"/>
+  <path data-w=".8" d="M38 46 C40 44 42 44 43.4 46.4 C44.8 44 47 44 49 46"/>
+</svg>

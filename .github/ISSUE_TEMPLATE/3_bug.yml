@@ -1,0 +1,40 @@
+name: 🐛 Bug
+description: Segnala un errore negli script, nelle immagini generate o nella CI
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: descrizione
+    attributes:
+      label: Descrizione
+      description: Cosa non funziona come dovrebbe?
+    validations:
+      required: true
+  - type: textarea
+    id: riproduzione
+    attributes:
+      label: Passi per riprodurre
+      placeholder: |
+        1. npm run generate -- --only content/groups/ai-corner.yaml
+        2. Apri out/groups/ai-corner.png
+        3. Osserva '...'
+    validations:
+      required: true
+  - type: textarea
+    id: atteso
+    attributes:
+      label: Comportamento atteso
+    validations:
+      required: true
+  - type: textarea
+    id: ambiente
+    attributes:
+      label: Ambiente
+      description: Versione di Node (`node -v`), sistema operativo, output dei comandi, screenshot.
+  - type: checkboxes
+    id: conferme
+    attributes:
+      label: Conferme
+      options:
+        - label: Ho cercato tra le issue esistenti e non è un duplicato
+          required: true

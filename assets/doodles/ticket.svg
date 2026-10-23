@@ -1,0 +1,7 @@
+<!-- ticket — disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 30 C34 29.4 62 29.4 82 30 C82.4 34 82.4 37.4 82 40 C78 40.4 76 43.6 76 48 C76 52.4 78 55.6 82 56 C82.4 59.6 82.4 63 82 66 C62 66.6 34 66.6 14 66 C13.6 63 13.6 59.6 14 56 C18 55.6 20 52.4 20 48 C20 43.6 18 40.4 14 40 C13.6 37.4 13.6 34 14 30 Z"/>
+  <path data-w=".7" d="M62 33 L62 36 M62 40.6 L62 43.6 M62 48.2 L62 51.2 M62 55.8 L62 58.8 M62 62.4 L62 64"/>
+  <path data-w=".7" d="M27 42 C35 41.6 43 41.6 51 42 M27 50 C33 49.8 39 49.8 45 50 M27 57 C30 56.8 33 56.8 36 57"/>
+  <path data-w=".7" d="M70 42 C70.6 46 71.4 47 75 48 C71.4 49 70.6 50 70 54 C69.4 50 68.6 49 65 48 C68.6 47 69.4 46 70 42 Z" fill="currentColor" fill-opacity=".4"/>
+</svg>

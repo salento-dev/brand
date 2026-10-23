@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../../schema/group.schema.json
+# ESEMPIO: gruppo temporaneo già archiviato (non viene più generato di default).
+name: Hackathon Lecce 2026
+shortName: Hackathon
+kind: temporary
+subject: code-window
+doodles: [laptop, bug, coffee, lightbulb, keyboard]
+starts: 2026-09-12
+ends: 2026-09-13
+status: archived
+example: true

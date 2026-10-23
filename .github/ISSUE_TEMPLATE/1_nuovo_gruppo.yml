@@ -1,0 +1,64 @@
+name: 💬 Nuovo gruppo
+description: Richiedi l'icona per un nuovo gruppo WhatsApp della community
+title: "[Gruppo]: "
+labels: ["gruppo"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Compila i campi: una persona del team (o tu stesso, vedi CONTRIBUTING.md) aggiungerà il file `content/groups/<slug>.yaml`.
+        **Non incollare link di invito WhatsApp.**
+  - type: input
+    id: nome
+    attributes:
+      label: Nome del gruppo
+      description: Come appare su WhatsApp (max 32 caratteri).
+      placeholder: AI Corner
+    validations:
+      required: true
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo
+      options:
+        - permanente (gruppo stabile)
+        - temporaneo (evento, trasferta, periodo limitato)
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Date (solo temporanei)
+      description: Inizio e fine in formato AAAA-MM-GG.
+      placeholder: 2026-11-18 → 2026-11-19
+  - type: textarea
+    id: descrizione
+    attributes:
+      label: Descrizione
+      description: A cosa serve il gruppo, in una o due frasi.
+    validations:
+      required: true
+  - type: input
+    id: nome_breve
+    attributes:
+      label: Nome breve
+      description: Max 14 caratteri, usato in galleria e come testo alternativo (non è disegnato sull'icona).
+      placeholder: Dev Break
+    validations:
+      required: true
+  - type: textarea
+    id: soggetto
+    attributes:
+      label: Soggetto e colore
+      description: |
+        Soggetto: uno di `assets/subjects/` (coffee-cup, round-table, robot, code-window, market-stall, train) o un'idea per uno nuovo (apri anche la issue "Nuovo soggetto o doodle").
+        Colore (solo permanenti): cyan, violet, fuchsia, emerald o lime. I temporanei sono sempre pietra.
+        Doodle dello sfondo (facoltativo): 4–6 oggetti tipici del gruppo.
+      placeholder: "soggetto: coffee-cup · colore: fuchsia · doodle: pizza, gamepad, cuffie"
+  - type: checkboxes
+    id: conferme
+    attributes:
+      label: Conferme
+      options:
+        - label: Ho cercato tra le issue esistenti e non è un duplicato
+          required: true

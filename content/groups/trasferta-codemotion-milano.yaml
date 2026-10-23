@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=../../schema/group.schema.json
+# ESEMPIO: date inventate, serve a mostrare un gruppo temporaneo (accento pietra, niente campo accent).
+name: Trasferta Codemotion Milano
+shortName: Codemotion
+kind: temporary
+subject: train
+doodles: [suitcase, ticket, map-pin, plane, coffee]
+description: Organizzazione di viaggio e alloggio per Codemotion Milano.
+starts: 2026-11-18
+ends: 2026-11-19
+example: true

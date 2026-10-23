@@ -1,0 +1,8 @@
+<!-- mic — disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M58 16 C66 15.8 72 22 72 30 C72 38 66 44 58 44 C50 44 44 38 44 30 C44 22.4 49.6 16.2 56.6 16" fill="currentColor" fill-opacity=".2"/>
+  <path data-w=".6" d="M46 26 C54 25.6 62 25.6 70 26 M45 33 C54 33.4 62 33.4 71 33 M53 17.4 C51.6 26 51.6 34 53 42.6 M63 17.4 C64.4 26 64.4 34 63 42.6"/>
+  <path d="M48.4 40 C40 50 30 62 22 72 C20 74.6 21.4 77.6 24 78.4 C26 79 27.6 78 28.8 76.4 C36.6 66 44.6 56 52.6 45.8"/>
+  <path data-w=".8" d="M22 78 C18 84 12 86 8 84"/>
+  <path d="M78 18 C82 22 82 30 78 34 M84 13 C90 20 90 32 84 39"/>
+</svg>

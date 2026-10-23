@@ -1,0 +1,130 @@
+# Pubblica le anteprime della PR in un commento "sticky".
+# SICUREZZA: gira nel contesto del repo (permessi di scrittura) e quindi NON fa checkout
+# né esegue codice della PR. L'artifact è trattato come dato non fidato:
+# si accettano solo PNG veri con nomi kebab-case e un numero di PR fatto di sole cifre.
+name: Preview comment
+
+on:
+  workflow_run:
+    workflows: [Build]
+    types: [completed]
+
+permissions:
+  contents: write       # push sul branch orfano `previews`
+  pull-requests: write  # commento sulla PR
+  actions: read         # download dell'artifact
+
+jobs:
+  comment:
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: preview
+          path: ${{ runner.temp }}/artifact
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Verifica l'artifact (dati non fidati)
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          src="$RUNNER_TEMP/artifact"
+          clean="$RUNNER_TEMP/clean"
+          mkdir -p "$clean"
+
+          pr=$(head -c 16 "$src/pr-number.txt" | tr -d '[:space:]')
+          if ! [[ "$pr" =~ ^[0-9]{1,7}$ ]]; then echo "::error::numero PR non valido"; exit 1; fi
+
+          # L'artifact deve venire dall'ultimo commit della PR dichiarata.
+          head_sha=$(gh api "repos/$REPO/pulls/$pr" --jq .head.sha)
+          if [ "$head_sha" != "$RUN_SHA" ]; then
+            echo "Commit diverso dalla testa della PR #$pr (nuovo push?): salto."
+            echo "skip=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+
+          for f in "$src"/*; do
+            name=$(basename "$f")
+            [ "$name" = "pr-number.txt" ] && continue
+            if [[ "$name" =~ ^[a-z0-9]+(-[a-z0-9]+)*\.png$ ]] && [ -f "$f" ] && [ ! -L "$f" ] \
+              && [ "$(stat -c%s "$f")" -le 2000000 ] \
+              && [ "$(head -c 8 "$f" | od -An -tx1 | tr -d ' \n')" = "89504e470d0a1a0a" ]; then
+              cp "$f" "$clean/$name"
+            else
+              echo "::warning::file scartato: $(printf '%q' "$name")"
+            fi
+          done
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: Pubblica i PNG sul branch previews
+        id: push
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ steps.check.outputs.pr }}
+        run: |
+          set -euo pipefail
+          count=$(find "$RUNNER_TEMP/clean" -name '*.png' | wc -l)
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+          [ "$count" -eq 0 ] && exit 0
+
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
+          git init -q "$RUNNER_TEMP/previews" && cd "$RUNNER_TEMP/previews"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads "$remote" previews >/dev/null; then
+            git fetch -q --depth 1 "$remote" previews && git checkout -q -b previews FETCH_HEAD
+          else
+            git checkout -q --orphan previews
+          fi
+          rm -rf "pr-$PR" && mkdir -p "pr-$PR"
+          cp "$RUNNER_TEMP"/clean/*.png "pr-$PR/"
+          git add -A
+          git commit -q -m "Anteprime PR #$PR" || echo "Nessuna modifica"
+          git push -q "$remote" HEAD:previews
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Crea o aggiorna il commento
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ steps.check.outputs.pr }}
+          SHA: ${{ steps.push.outputs.sha }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          set -euo pipefail
+          marker="<!-- salento-brand-preview -->"
+          {
+            echo "$marker"
+            echo "### Anteprima icone"
+            echo
+            if [ -z "${SHA:-}" ]; then
+              echo "Nessuna immagine modificata da questa PR."
+            else
+              echo "| Gruppo | 640px | ritaglio a 48px |"
+              echo "|---|---|---|"
+              for f in "$RUNNER_TEMP"/clean/*.png; do
+                name=$(basename "$f" .png)
+                url="https://raw.githubusercontent.com/$REPO/$SHA/pr-$PR/$name.png"
+                echo "| \`$name\` | <img src=\"$url\" width=\"160\"> | <img src=\"$url\" width=\"48\"> |"
+              done
+            fi
+            echo
+            echo "Galleria completa: artifact \`gallery\` della [build]($RUN_URL)."
+          } > body.md
+
+          id=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n1)
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$id" -F body=@body.md > /dev/null
+          else
+            gh api -X POST "repos/$REPO/issues/$PR/comments" -F body=@body.md > /dev/null
+          fi

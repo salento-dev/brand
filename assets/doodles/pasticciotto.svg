@@ -1,0 +1,10 @@
+<!-- pasticciotto — disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16.6 55.6 C20 40.4 32 32 48 32 C64 32 76 40.4 79.6 55.4"/>
+  <path d="M13.6 57.6 C30 61.4 66 61.4 82.4 57.4"/>
+  <path d="M18 62 C20 68 22 74 26 77 C40 79.6 56 79.6 70 77 C74 74 76 68 78.4 62"/>
+  <path data-w=".6" d="M30 70 L31 77.6 M40 70.6 L40.4 78.6 M50 70.8 L49.8 78.8 M60 70.4 L59.4 78.4 M68.6 69 L67.4 77"/>
+  <path data-w=".6" d="M28.6 43 C32.6 39 39 36.6 45 36.4"/>
+  <g fill="currentColor" stroke="none"><circle cx="56" cy="40.4" r="1.3"/><circle cx="62.4" cy="45" r="1.1"/><circle cx="52.6" cy="46" r="1"/><circle cx="68" cy="49.6" r="1.2"/></g>
+  <path data-w=".7" d="M40 24 C38 20 42 18 40 13 M50 24 C48 20 52 18 50 13"/>
+</svg>

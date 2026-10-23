@@ -1,0 +1,8 @@
+<!-- laptop — disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M24 21.5 C38 20.2 57 19.8 71.5 21 C74.6 21.3 76 23 75.9 26 C75.6 36 75.4 46 75.2 55.5 C55 56.6 39 56.4 21.4 55.8 C21 46 21 35 21.2 25.2 C21.3 23 22.4 21.7 24 21.5 Z"/>
+  <path d="M14 60.5 C36 59.6 61 59.4 82.5 60.3 C84 63.5 83 67 79.5 68.2 C60 69.6 37 69.4 17 68.4 C13.8 67 13 63.8 14 60.5 Z"/>
+  <path data-w=".6" d="M42 64.2 C45.5 64.6 50 64.5 54 64.1"/>
+  <path data-w=".7" d="M29.5 31.2 C33 31 37 30.9 40.5 31.1 M34 38.4 C40 38.1 47 38.2 53 38.5 M34 45.4 C37.6 45.2 41 45.3 44 45.5 M58 38.4 C61 38.3 63.6 38.3 66 38.5"/>
+  <rect x="48" y="43" width="4.4" height="5" rx="1" fill="currentColor" stroke="none"/>
+</svg>

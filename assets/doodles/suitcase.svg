@@ -1,0 +1,10 @@
+<!-- suitcase — disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 32 C16 28.6 18 26.6 21.4 26.6 C39 26 57 26 74.6 26.6 C78 26.8 80 28.8 80 32.2 C80.4 46 80.4 60 80 72 C79.8 75.6 77.6 77.6 74.4 77.6 C57 78.2 39 78.2 21.6 77.6 C18.2 77.4 16.2 75.4 16.2 72 C15.8 60 15.8 46 16 32 Z"/>
+  <path d="M38 26.4 C38 22 38.4 18.6 40 17.4 C44 16.6 52 16.6 56 17.4 C57.6 18.6 58 22 58 26.4"/>
+  <path d="M30 26.8 C30.4 44 30.2 60 30 77.6 M66 26.8 C65.6 44 65.8 60 66 77.6"/>
+  <circle cx="24" cy="82.6" r="3.4"/><circle cx="72" cy="82.6" r="3.4"/>
+  <path data-w=".6" d="M48 37 L50.4 42.2 L56 42.8 L51.8 46.6 L53 52 L48 49.4 L43 52 L44.2 46.6 L40 42.8 L45.6 42.2 Z" fill="currentColor" fill-opacity=".35"/>
+  <circle cx="48" cy="65" r="5" data-w=".6"/>
+  <path data-w=".6" d="M44.6 63 L51.4 63 M44.6 67 L51.4 67"/>
+</svg>

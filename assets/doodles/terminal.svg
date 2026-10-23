@@ -1,0 +1,11 @@
+<!-- terminal — disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 20 C14 17 16 15.4 19 15.4 C38 14.8 58 14.8 77 15.4 C80 15.6 82 17.4 82 20.4 C82.4 37 82.4 54 82 71 C81.8 74 80 75.6 77 75.6 C58 76.4 38 76.4 19 75.8 C16 75.6 14.2 73.8 14.2 70.8 C13.8 54 13.8 37 14 20 Z"/>
+  <path d="M14.4 27.6 C37 26.8 60 26.8 81.8 27.4"/>
+  <circle cx="21" cy="21.6" r="1.8" fill="currentColor" stroke="none"/>
+  <circle cx="27.6" cy="21.4" r="1.6" data-w=".6"/>
+  <circle cx="34" cy="21.6" r="1.6" data-w=".6"/>
+  <path d="M24 39.6 C28 42.6 31 44.8 34.4 47 C31 49.4 28 51.6 24.2 54.6"/>
+  <path d="M40 55 C45 54.6 50 54.6 55 55"/>
+  <path data-w=".6" d="M24 65 C34 64.6 44 64.6 52 65 M58 65 C62 64.8 66 64.8 70 65.2"/>
+</svg>
