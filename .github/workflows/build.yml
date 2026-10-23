@@ -1,0 +1,58 @@
+# Valida e genera le immagini di una PR. Gira con permessi in sola lettura:
+# il commento con le anteprime lo pubblica preview-comment.yml (workflow_run).
+name: Build
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+      - run: npm run validate
+      - run: npm test
+
+      - name: Genera solo le immagini toccate dalla PR
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          git diff --name-only "origin/${BASE_REF}...HEAD" > changed.txt
+          echo "File modificati:"; cat changed.txt
+          npm run generate -- --only "$(cat changed.txt)"
+
+      - run: npm run gallery
+
+      - name: Prepara l'artifact
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          mkdir -p preview
+          find out/groups -maxdepth 1 -name '*.png' -exec cp {} preview/ \;
+          echo "$PR_NUMBER" > preview/pr-number.txt
+          ls -la preview
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview
+          path: preview/
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gallery
+          path: out/
+          retention-days: 7

@@ -1,0 +1,10 @@
+<!-- chip-circuit — scena, disegnata a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M52 50 C52 46 54.4 43.6 58.4 43.6 C72 43.2 88 43.2 101.6 43.6 C105.6 43.8 108 46.2 108 50.2 C108.4 64 108.4 80 108 94 C107.8 98 105.4 100.4 101.4 100.4 C88 100.8 72 100.8 58.6 100.4 C54.6 100.2 52.2 97.8 52.2 93.8 C51.8 80 51.8 64 52 50 Z"/>
+  <path data-w=".7" d="M64 58 C74 57.6 86 57.6 96 58 C96.4 66 96.4 78 96 86 C86 86.4 74 86.4 64 86 C63.6 78 63.6 66 64 58 Z" fill="currentColor" fill-opacity=".2"/>
+  <path d="M70 80 C72 73 74 67.4 76 62 C78 67.4 80 73 82 80 M72 74.6 L80 74.6 M89 62.4 C89.4 68 89.4 74 89 80"/>
+  <path data-w=".8" d="M64 43.4 C64 36 64 30 60 26 C56 22 50 22 46 22 M80 43.4 C80.4 34 80.4 26 80 16 M96 43.4 C96 36 98 30 104 28 C110 26 116 26 122 26 M64 100.6 C64 110 62 116 56 120 C50 124 44 124 38 124 M80 100.6 C80 112 80.4 122 80 132 M96 100.6 C96.4 108 100 114 106 118 C112 121 118 122 124 122 M52 60 C44 60 38 58 32 54 C28 51 24 50 20 50 M52 84 C44 84 36 86 30.4 91.6 M108 60 C116 60 122 58 127.6 54 M108 84 C118 84 126 86 134 90"/>
+  <circle cx="42.4" cy="22" r="3.6"/><circle cx="80" cy="12.4" r="3.6" fill="currentColor" fill-opacity=".35"/><circle cx="125.6" cy="26" r="3.6"/><circle cx="34.4" cy="124" r="3.6" fill="currentColor" fill-opacity=".35"/><circle cx="80" cy="135.6" r="3.6"/><circle cx="127.6" cy="122" r="3.6"/><circle cx="16.4" cy="50" r="3.6"/><circle cx="27.6" cy="94.4" r="3.6" fill="currentColor" fill-opacity=".35"/><circle cx="130.6" cy="51.4" r="3.6" fill="currentColor" fill-opacity=".35"/><circle cx="137.6" cy="91.6" r="3.6"/>
+  <path d="M140 132 C141 138 143 140.4 149 141.4 C143 142.4 141 144.6 140 150.6 C139 144.6 137 142.4 131 141.4 C137 140.4 139 138 140 132 Z"/>
+  <path data-w=".7" d="M22 128 L22 136 M18 132 L26 132"/>
+</svg>

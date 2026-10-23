@@ -1,0 +1,12 @@
+<!-- fish — disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M73 46 C68 38 56 32.4 44 33 C30 33.8 20 42 15 49 C21 57 31 62 44 62 C57 62 68 55 73 46 Z"/>
+  <path d="M73 46 C78 40 84 36 89 35 C87 42 87 50 89 58 C84 57 78 53 73 46"/>
+  <circle cx="27" cy="45.4" r="2.2" fill="currentColor" stroke="none"/>
+  <path data-w=".7" d="M15.6 50 C17.6 50.6 19 51.6 20 53"/>
+  <path d="M34 39.4 C37.6 44 37.8 51 34.4 56.6"/>
+  <path data-w=".6" d="M45 42 C47.6 44 47.6 48 45 50 M53 40.4 C56 43 56 47 53 49.6 M49 50.6 C51.6 52.4 51.6 56 49 57.6 M60.4 44 C62.6 46 62.6 49 60.4 51"/>
+  <path d="M44 33 C46 27 51 24 57.4 23.6 C56.4 27.4 55.6 31 56.4 34.6"/>
+  <circle cx="10" cy="36" r="2.6" data-w=".7"/>
+  <circle cx="6" cy="27.4" r="1.6" data-w=".7"/>
+</svg>

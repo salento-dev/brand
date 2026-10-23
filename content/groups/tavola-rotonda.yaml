@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../../schema/group.schema.json
+name: Tavola Rotonda
+shortName: Tavola Rotonda
+kind: permanent
+subject: round-table
+accent: violet
+doodles: [chat-bubbles, mic, lightbulb, people]
+description: Discussioni aperte su carriera, mestiere e tecnologia.

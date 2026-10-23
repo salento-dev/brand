@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../../schema/group.schema.json
+name: Off topic – Dev Break
+shortName: Dev Break
+kind: permanent
+subject: coffee-cup
+accent: fuchsia
+doodles: [pizza, gamepad, headphones, pasticciotto, chat-bubbles, tambourine]
+description: Chiacchiere, meme e pause caffè lontano dal codice.

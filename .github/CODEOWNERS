@@ -1,0 +1,7 @@
+# Le modifiche al sistema visivo richiedono la revisione del core team.
+# TODO: sostituire con il team reale (vedi docs/open-questions.md).
+/tokens/      @salento-dev/core
+/src/         @salento-dev/core
+/formats/     @salento-dev/core
+/assets/      @salento-dev/core
+/.github/     @salento-dev/core

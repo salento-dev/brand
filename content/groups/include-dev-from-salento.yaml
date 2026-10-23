@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../../schema/group.schema.json
+name: "@include dev from salento"
+shortName: "@include"
+kind: permanent
+subject: code-window
+accent: emerald
+doodles: [lighthouse, git-branch, terminal, waves]
+description: Il gruppo tecnico principale della community.

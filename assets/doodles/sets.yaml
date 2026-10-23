@@ -1,0 +1,17 @@
+# Set di doodle del wallpaper delle icone (vedi assets/doodles/README.md).
+# Ogni icona usa: i doodle del gruppo (campo `doodles` nel suo YAML, pesati ×3) + `base` (×1) + `fillers`.
+# I nomi sono file di questa cartella senza estensione.
+
+# Set comune a tutti i gruppi: tocchi "salentini" che legano tra loro le icone.
+base:
+  - sun
+  - pajara
+
+# Riempitivi piccoli negli spazi rimasti (solo file filler-*).
+fillers:
+  - filler-sparkle
+  - filler-plus
+  - filler-dot
+  - filler-ring
+  - filler-star
+  - filler-heart

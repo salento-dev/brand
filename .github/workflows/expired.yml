@@ -1,0 +1,44 @@
+# Ogni lunedì controlla i gruppi temporanei terminati ma ancora attivi e
+# mantiene una sola issue "Gruppi temporanei da archiviare" (chiusa quando la lista è vuota).
+name: Gruppi scaduti
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Apri, aggiorna o chiudi la issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          title="Gruppi temporanei da archiviare"
+          node scripts/check-expired.js --markdown > body.md
+          gh label create archiviazione --color E2B45A --description "Gruppi temporanei da archiviare" 2>/dev/null || true
+          num=$(gh issue list --label archiviazione --state open --json number,title \
+            --jq ".[] | select(.title == \"$title\") | .number" | head -n1)
+          if [ -s body.md ]; then
+            if [ -n "$num" ]; then gh issue edit "$num" --body-file body.md
+            else gh issue create --title "$title" --label archiviazione --body-file body.md; fi
+          elif [ -n "$num" ]; then
+            gh issue close "$num" --comment "Nessun gruppo temporaneo da archiviare: chiudo la issue."
+          else
+            echo "Niente da fare."
+          fi

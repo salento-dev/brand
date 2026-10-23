@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../../schema/group.schema.json
+name: Mercatino
+shortName: Mercatino
+kind: permanent
+subject: market-stall
+accent: lime
+doodles: [tag, box, cart, coins, handshake, pasticciotto]
+description: Compro, vendo, regalo hardware e libri tra membri della community.

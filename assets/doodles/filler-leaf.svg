@@ -1,0 +1,5 @@
+<!-- leaf — riempitivo, disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5.6 25.4 C8.6 15 16.6 8.4 27 7 C25.4 16.6 17.4 23.6 5.6 25.4 Z" fill="currentColor" fill-opacity=".25"/>
+  <path d="M8 23 C13.6 18 18.6 14 23.4 10.4" data-w=".6"/>
+</svg>

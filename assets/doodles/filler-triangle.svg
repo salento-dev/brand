@@ -1,0 +1,4 @@
+<!-- triangle — riempitivo, disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M16 6.6 C19.4 12.4 22.6 18 25.6 24 C19.4 24.6 12.8 24.6 6.6 24.2 C9.6 18 12.6 12.4 16 6.6 Z"/>
+</svg>

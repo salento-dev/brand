@@ -1,0 +1,5 @@
+<!-- note — riempitivo, disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M13 23 L13 7.6 C17 8.4 21 10 23.4 13"/>
+  <ellipse cx="9.6" cy="23.4" rx="3.8" ry="3" fill="currentColor"/>
+</svg>

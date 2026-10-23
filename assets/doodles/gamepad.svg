@@ -1,0 +1,8 @@
+<!-- gamepad — disegnato a mano per Salento.dev -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M28 34 C36 32.6 60 32.6 68 34 C78 35.6 84 46 86 58 C87.6 67 84 74 78 74.4 C72.6 74.8 68 70 64 64.6 C58 62.6 38 62.6 32 64.6 C28 70 23.4 74.8 18 74.4 C12 74 8.4 67 10 58 C12 46 18 35.6 28 34 Z"/>
+  <path d="M26 44 L26.2 56 M20 50.2 L32 50"/>
+  <circle cx="66" cy="45" r="2.6" fill="currentColor" stroke="none"/><circle cx="72" cy="51" r="2.6" fill="currentColor" stroke="none"/>
+  <circle cx="60" cy="51" r="2.4" data-w=".6"/><circle cx="66" cy="57" r="2.4" data-w=".6"/>
+  <path data-w=".8" d="M48 32.8 C48 24 54 20 50 12"/>
+</svg>
