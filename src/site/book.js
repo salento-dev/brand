@@ -1,16 +1,18 @@
 // Brand book (out/index.html): una pagina in italiano generata da content/brand/brand.yaml e dai token.
+// Il logo si mostra e si scarica solo dai file ufficiali del logo pack (ADR-0013), mai ricostruito.
 import { hexToOklch } from '../color.js';
 import { contrastRatio } from '../contrast.js';
-import { CLEAR_SPACE, CLEAR_SPACE_RATIO, LOGO, MIN_HEIGHT_MM, MIN_HEIGHT_PX, LOGO_VARIANTS, LOGO_PNG_HEIGHTS, AVATAR_SIZES, logoPaths } from '../logo.js';
+import { FORMATS, PADDINGS, AVATAR_SIZES, AVATAR_SVG, avatarPng, moduleRatio, readOfficialSvg, svgParts, LOGO_PACK_ZIP } from '../logo.js';
 import { KIT_ZIP, KIT_ROOT } from '../kit.js';
 import { itemFiles } from './gallery.js';
-import { esc, inline, logo, corners, telemetry, cta, btn, sectionHead, module, page } from './html.js';
+import { esc, inline, logo, logoHref, corners, telemetry, cta, btn, sectionHead, module, page } from './html.js';
 
 const REPO = 'https://github.com/salento-dev/brand';
 const blob = (p) => `${REPO}/blob/main/${p}`;
 
 export const SECTIONS = [
   ['essenza', 'Essenza'],
+  ['descrizioni', 'Descrizioni'],
   ['logo', 'Logo'],
   ['colori', 'Colori'],
   ['tipografia', 'Tipografia'],
@@ -22,8 +24,9 @@ export const SECTIONS = [
 ];
 
 const COLOR_GROUPS = [
+  ['marchio', 'Colori del marchio', 'I colori del logo ufficiale, dal media kit. **Salento Cyan** è il colore primario del brand: l\'unica luce accesa, solo su fondi scuri ([ADR-0014](' + blob('docs/04_decisioni_architetturali/0014_palette_del_marchio_salento_cyan_e_dark.md') + ')).'],
   ['neutri', 'Neutri', 'Grafite fredda appena tinta di blu (scala `mist`): telaio, pannelli, bordi e testo. Profondità solo per gradini tonali.'],
-  ['primario', 'Primario', 'Signal Cyan è la spia accesa: l\'unico accento attivo dell\'interfaccia.'],
+  ['primario', 'Interfaccia del sito: cyan attuale', 'Signal Cyan (`cyan-500`) è il colore **attuale** dell\'interfaccia del sito, da migrare a Salento Cyan. Le varianti Deep, Pale e Wash restano per hover e usi minori.'],
   ['riserva', 'Riserva', 'Token presenti ma non attivi nell\'interfaccia: servono una decisione esplicita (Reserve Rule).'],
   ['funzionali', 'Funzionali', 'Prestiti da marchi e stati, non accenti di marca (Brand-Borrow Rule).'],
 ];
@@ -75,6 +78,9 @@ function rulesList(brand, section) {
 const doList = (items, kind) =>
   `<ul class="dd ${kind}">${items.map((i) => `<li><span class="dd-mark" aria-hidden="true">${kind === 'do' ? '+' : '×'}</span><span><span class="sr-only">${kind === 'do' ? 'Sì: ' : 'No: '}</span>${inline(i)}</span></li>`).join('')}</ul>`;
 
+/** Sfondo corretto per una variante del logo: chiaro (White) o scuro (Black). */
+const stageClass = (variant) => (variant.background === 'brand.color.white' ? 'stage-light' : 'stage-dark');
+
 // ---------------------------------------------------------------- sezioni
 
 function hero({ brand, build, kit }) {
@@ -82,10 +88,11 @@ function hero({ brand, build, kit }) {
     <div class="hero-text">
       <p class="eyebrow">Brand book // ${esc(brand.identity.domain)}</p>
       <h1 id="hero-title" class="display">Salento.dev <span class="dash">—</span> <span class="signal">Brand</span></h1>
-      <p class="lead">${inline(brand.identity.tagline)} Qui trovi logo, colori, font e regole per usarli: per chi fa parte della community, per i partner e per i soci.</p>
+      <p class="lead">${inline(brand.identity.tagline)} Qui trovi logo ufficiale, descrizioni, colori, font e regole per usarli: per chi fa parte della community, per i partner e per i soci.</p>
       <p class="meta">${telemetry(`Aggiornato: ${esc(build.dateLabel)}`)} ${telemetry(`commit <a href="${REPO}/commit/${esc(build.sha)}">${esc(build.commit)}</a>`)}</p>
       <div class="actions">
         ${cta(KIT_ZIP, 'Scarica il kit', `download aria-label="Scarica il kit del brand (zip, ${bytes(kit.zipSize)})"`)}
+        <a class="btn" href="${LOGO_PACK_ZIP}" download aria-label="Scarica il logo pack (zip, ${bytes(kit.packSize)})">Logo pack</a>
         ${btn('icone/', 'Icone dei gruppi')}
         ${btn(esc(brand.identity.site), 'Sito', { externalLink: true })}
         ${btn(REPO, 'Repo', { externalLink: true })}
@@ -93,8 +100,8 @@ function hero({ brand, build, kit }) {
     </div>
     <div class="hero-logo">
       ${corners()}
-      ${logo({ label: 'Logo di Salento.dev', cls: 'logo big' })}
-      ${telemetry('logo // bright mist su console black', 'caption')}
+      ${logo({ family: 'stacked-symbol', alt: 'Logo di Salento.dev', cls: 'logo big' })}
+      ${telemetry('logo // stacked + simbolo · white on dark', 'caption')}
     </div>
   </section>`;
 }
@@ -129,65 +136,134 @@ function essence({ brand }) {
   });
 }
 
-function logoSection({ brand, tokens, kit }) {
-  const pathsOnly = logoPaths();
-  const x = CLEAR_SPACE;
-  const vb = `${-x * 1.6} ${-x * 1.6} ${LOGO.width + x * 3.2} ${LOGO.height + x * 3.2}`;
-  const clear = `<svg class="clearspace" viewBox="${vb}" role="img" aria-labelledby="cs-title">
-      <title id="cs-title">Area di rispetto: X attorno al logo, X uguale a una riga di barre</title>
-      <rect x="${-x}" y="${-x}" width="${LOGO.width + 2 * x}" height="${LOGO.height + 2 * x}" class="cs-area"/>
-      <rect x="0" y="0" width="${LOGO.width}" height="${LOGO.height}" class="cs-box"/>
-      <g class="cs-logo">${pathsOnly}</g>
-      <rect x="${LOGO.width + x * 0.25}" y="${LOGO.rows[1]}" width="${x * 0.5}" height="${x}" class="cs-row"/>
-      <path class="cs-measure" d="M${LOGO.width + 1} ${LOGO.rows[1]}H${LOGO.width + x * 0.85}M${LOGO.width + 1} ${LOGO.rows[2]}H${LOGO.width + x * 0.85}M${LOGO.width + x * 0.5} ${LOGO.rows[1]}V${LOGO.rows[2]}"/>
-      <g class="cs-x"><path d="M${-x} ${LOGO.height / 2}H0M${LOGO.width} ${LOGO.height / 2}H${LOGO.width + x}M${LOGO.width / 2} ${-x}V0M${LOGO.width / 2} ${LOGO.height}V${LOGO.height + x}"/></g>
-      <g class="cs-label"><text x="${-x / 2}" y="${LOGO.height / 2 - 3}">X</text><text x="${LOGO.width + x / 2}" y="${LOGO.height / 2 - 3}">X</text><text x="${LOGO.width / 2 + 4}" y="${-x / 2 + 2}">X</text><text x="${LOGO.width / 2 + 4}" y="${LOGO.height + x / 2 + 2}">X</text><text x="${LOGO.width + x * 0.95}" y="${LOGO.rows[1] + x / 2 + 2}" class="row-x">X</text></g>
-    </svg>`;
-  const variants = LOGO_VARIANTS.map((v) => {
-    const light = v.slug === 'nero';
-    return `<figure class="logo-tile ${light ? 'on-light' : ''}">
-      <div class="logo-stage" style="color:${tokens[v.token]}">${logo({ label: `Logo ${v.label}` })}</div>
-      <figcaption><b>${esc(v.label)}</b> ${telemetry(esc(tokens[v.token].toUpperCase()))}<br><span class="muted">${esc(brand.logo.colors.find((c) => c.token === v.token)?.use ?? v.on)}</span></figcaption>
+function descriptionsSection({ brand }) {
+  const items = brand.descriptions.items.map((d) => `<article class="card desc-card">
+      ${corners()}
+      <p class="telemetry">${esc(d.label)} // ${esc(d.use)}</p>
+      <p class="desc-text">${inline(d.text)}</p>
+      <button type="button" class="copy copy-text" data-copy="${esc(d.text)}" aria-label="Copia la descrizione ${esc(d.label.toLowerCase())}"><span class="k">Copia</span><span class="v">${d.text.length} caratteri</span></button>
+    </article>`).join('');
+  return module({
+    id: 'descrizioni',
+    body: `${sectionHead({ id: 'descrizioni', n: '02', eyebrow: 'Copy ufficiali', title: 'Descrizioni *ufficiali*', desc: 'Testi pronti da usare in pagine evento, comunicati, newsletter, post social e presentazioni partner. Clicca su «Copia» per copiarli.', tag: 'dal media kit' })}
+    <div class="cols-3">${items}</div>`,
+  });
+}
+
+function variantTile(family, variant) {
+  const links = FORMATS.map((f) => `<div><dt class="telemetry">${f.toUpperCase()}</dt><dd>${PADDINGS.map((p) =>
+    `<a href="${logoHref(family.id, variant.id, p, f)}" download>${p === 'padded' ? 'con padding' : 'senza padding'}<span class="sr-only"> (${esc(family.name)}, ${esc(variant.name)}, ${f.toUpperCase()})</span></a>`).join('')}</dd></div>`).join('');
+  return `<figure class="variant-tile">
+      <div class="logo-stage ${stageClass(variant)} fam-${family.id}">${logo({ family: family.id, variant: variant.id, padding: 'padded', alt: `${family.name}, ${variant.name}` })}</div>
+      <figcaption><b>${esc(variant.name)}</b> ${telemetry(esc(variant.on))}<br><span class="muted">${esc(variant.description)}</span></figcaption>
+      <dl class="dl-links">${links}</dl>
     </figure>`;
+}
+
+function clearSpaceDemo() {
+  const { viewBox } = svgParts(readOfficialSvg('horizontal', 'white-on-dark', 'no-padding'));
+  const [, , w, h] = viewBox;
+  const x = moduleRatio() * h; // un modulo = altezza di una barra del pittogramma
+  const n = (v) => fmtNum(v, 2);
+  const pad = x * 2.2;
+  return `<svg class="clearspace" viewBox="${n(-pad)} ${n(-pad)} ${n(w + pad * 2)} ${n(h + pad * 2)}" role="img" aria-labelledby="cs-title">
+      <title id="cs-title">Area di rispetto: almeno un modulo del pittogramma (X, l'altezza di una barra) attorno al logo</title>
+      <rect x="${n(-x)}" y="${n(-x)}" width="${n(w + 2 * x)}" height="${n(h + 2 * x)}" class="cs-area"/>
+      <image href="${logoHref('horizontal', 'white-on-dark')}" x="0" y="0" width="${n(w)}" height="${n(h)}"/>
+      <rect x="0" y="0" width="${n(w)}" height="${n(h)}" class="cs-box"/>
+      <path class="cs-measure" d="M${n(-x * 1.6)} 0H${n(-x * 0.2)}M${n(-x * 1.6)} ${n(x)}H${n(-x * 0.2)}M${n(-x * 0.9)} 0V${n(x)}"/>
+      <g class="cs-x"><path d="M${n(-x)} ${n(h / 2)}H0M${n(w)} ${n(h / 2)}H${n(w + x)}M${n(w / 2)} ${n(-x)}V0M${n(w / 2)} ${n(h)}V${n(h + x)}"/></g>
+      <g class="cs-label"><text x="${n(-x * 1.9)}" y="${n(x * 0.75)}" class="row-x">X</text><text x="${n(w + x * 0.5)}" y="${n(h / 2 - 1.2)}">X</text><text x="${n(w / 2 + 2.5)}" y="${n(-x * 0.3)}">X</text><text x="${n(w / 2 + 2.5)}" y="${n(h + x * 0.85)}">X</text></g>
+    </svg>`;
+}
+
+function logoSection({ brand }) {
+  const lg = brand.logo;
+  const fam = (id) => lg.families.find((f) => f.id === id);
+  const variant = (id) => lg.variants.find((v) => v.id === id);
+  const families = lg.families.map((f, i) => `<article class="logo-family" id="logo-${f.id}" aria-labelledby="logo-${f.id}-title">
+      <div class="family-head">
+        <div>
+          <p class="telemetry">${String(i + 1).padStart(2, '0')} // ${esc(f.id)}</p>
+          <h3 id="logo-${f.id}-title">${esc(f.name)}</h3>
+          <p class="muted">${inline(f.description)}</p>
+        </div>
+        <p class="family-use">${telemetry('Dove si usa')}<br>${inline(f.use)}</p>
+      </div>
+      <div class="variant-grid">${lg.variants.map((v) => variantTile(f, v)).join('')}</div>
+    </article>`).join('');
+  const where = lg.whereToUse.map((w) => {
+    const v = variant(w.variant ?? 'white-on-dark');
+    return `<tr>
+      <th scope="row">${esc(w.where)}</th>
+      <td><a href="#logo-${w.family}">${esc(fam(w.family).name)}</a>${w.variant ? ` · ${esc(v.name)}` : ''}</td>
+      <td><span class="where-thumb ${stageClass(v)}">${logo({ family: w.family, variant: v.id, padding: 'padded' })}</span></td>
+    </tr>`;
   }).join('');
+  const guide = lg.guidelines.map((g) => `<div class="card">${corners()}<h3>${esc(g.title)}</h3>${doList(g.items, 'do')}</div>`).join('');
+  const dontImg = (cls, v = 'white-on-dark') => logo({ family: 'horizontal', variant: v, padding: 'padded', cls: `logo ${cls}` });
   const donts = [
-    ['Deformato', `<svg viewBox="0 0 90 105" preserveAspectRatio="none" class="dont-stretch" fill="currentColor" aria-hidden="true">${pathsOnly}</svg>`],
-    ['Ruotato', `<svg viewBox="0 0 90 105" fill="currentColor" aria-hidden="true"><g transform="rotate(-18 45 52)">${pathsOnly}</g></svg>`],
-    ['Con effetti', `<svg viewBox="0 0 90 105" fill="currentColor" class="dont-glow" aria-hidden="true">${pathsOnly}</svg>`],
-    ['Solo contorno', `<svg viewBox="-2 -2 94 109" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">${pathsOnly}</svg>`],
-    ['Ricolorato', `<svg viewBox="0 0 90 105" aria-hidden="true"><defs><linearGradient id="dg" x1="0" x2="1"><stop offset="0" stop-color="${tokens['color.amber.500']}"/><stop offset="1" stop-color="${tokens['color.fuchsia.500']}"/></linearGradient></defs><g fill="url(#dg)">${pathsOnly}</g></svg>`],
-  ].map(([label, svg]) => `<figure class="dont-tile"><div class="logo-stage">${svg}</div><figcaption><span class="dd-mark" aria-hidden="true">×</span> ${label}</figcaption></figure>`).join('');
+    ['Deformato', 'stage-dark', dontImg('dont-stretch')],
+    ['Inclinato', 'stage-dark', dontImg('dont-skew')],
+    ['Con effetti', 'stage-dark', dontImg('dont-glow')],
+    ['Ricolorato', 'stage-dark', dontImg('dont-recolor', 'cyan-on-dark')],
+    ['Cyan su chiaro', 'stage-light', dontImg('', 'cyan-on-dark')],
+    ['Su fondo confuso', 'stage-busy', dontImg('')],
+  ].map(([label, stage, img]) => `<figure class="dont-tile" role="listitem"><div class="logo-stage ${stage}">${img}</div><figcaption><span class="dd-mark" aria-hidden="true">×</span> ${label}</figcaption></figure>`).join('');
   return module({
     id: 'logo',
-    body: `${sectionHead({ id: 'logo', n: '02', eyebrow: 'Logo', title: 'Il *logo*', desc: brand.logo.description, tag: 'svg · png · avatar' })}
-    <div class="logo-grid">${variants}</div>
-    <p class="note">${corners()}<b>Fondi chiari.</b> ${inline(brand.logo.lightRule)}</p>
+    body: `${sectionHead({ id: 'logo', n: '03', eyebrow: 'Logo', title: 'Il *logo* ufficiale', desc: lg.description, tag: '4 famiglie · 3 varianti · svg png webp' })}
+    <p class="note">${corners()}<b>Solo file ufficiali.</b> Tutti i file vengono dal logo pack del <a href="${esc(lg.provenance.url)}">media kit</a> (${esc(lg.provenance.imported)}), con checksum verificati: scaricali da qui, uno per uno o tutti insieme (<a href="${LOGO_PACK_ZIP}" download>${LOGO_PACK_ZIP}</a>). Con padding = piccolo margine incluso; senza padding = taglio stretto.</p>
+    <div class="logo-families">${families}</div>
+    <h3>Quale logo usare dove</h3>
+    <div class="table-wrap"><table class="where">
+      <caption class="sr-only">Quale famiglia e variante del logo usare in ciascun contesto</caption>
+      <thead><tr><th scope="col">Dove</th><th scope="col">Logo</th><th scope="col">Anteprima</th></tr></thead>
+      <tbody>${where}</tbody>
+    </table></div>
+    <h3>Linee guida</h3>
+    <div class="cols-2 guide">${guide}</div>
+    <p class="note">${corners()}<b>Fondi chiari.</b> ${inline(lg.lightRule)}</p>
     <div class="cols-2 logo-rules">
       <div class="card">
+        ${corners()}
         <h3>Area di rispetto</h3>
-        ${clear}
-        <p><b>X = una riga di barre</b> (barra + interlinea, ${fmtNum(x, 2)} unità su ${LOGO.height}, circa ${Math.round(CLEAR_SPACE_RATIO * 100)}% dell'altezza). Nessun testo, bordo o altro logo dentro X. I PNG del kit includono già questo margine.</p>
+        ${clearSpaceDemo()}
+        <p><b>X = un modulo del pittogramma</b> (l'altezza di una barra, circa ${Math.round(moduleRatio() * 100)}% dell'altezza del pittogramma): è il minimo. Nessun testo, icona, bordo o altro marchio dentro X; dove puoi, lascia di più. Il padding dei file «con padding» è più piccolo di X.</p>
       </div>
       <div class="card">
-        <h3>Dimensione minima</h3>
+        ${corners()}
+        <h3>Dimensioni piccole</h3>
         <div class="minsizes">
-          ${[64, 32, MIN_HEIGHT_PX].map((h) => `<figure><div style="height:${h}px">${logo({ cls: 'logo' })}</div><figcaption class="telemetry">${h}px</figcaption></figure>`).join('')}
+          ${[['horizontal', 40], ['horizontal', 28], ['pictogram', 24], ['pictogram', 16]].map(([f, h]) => `<figure><div style="height:${h}px">${logo({ family: f })}</div><figcaption class="telemetry">${h}px</figcaption></figure>`).join('')}
         </div>
-        <p>Almeno <b>${MIN_HEIGHT_PX}px</b> di altezza su schermo e <b>${MIN_HEIGHT_MM}mm</b> in stampa: sotto, le interlinee tra le barre si chiudono. Per avatar e favicon usa l'avatar del kit.</p>
+        <p>Il nome non va ridotto fino a diventare illeggibile: quando non si legge più, usa il <b>pittogramma</b>. Il pittogramma resta riconoscibile fino a circa <b>24px</b> di altezza su schermo (8mm in stampa); più in piccolo, solo come favicon.</p>
         <h3>Avatar</h3>
         <div class="avatar-row">
-          <img src="kit/logo/avatar/salento-dev-avatar-512.png" width="96" height="96" alt="Avatar: logo Bright Mist su Console Black, ritagliato a cerchio" class="round">
-          <img src="kit/logo/avatar/salento-dev-avatar-512.png" width="48" height="48" alt="" class="round">
-          <p class="muted">Quadrato, logo al 50% dell'altezza: resta intero anche nel ritaglio circolare dei social.</p>
+          <img src="kit/${avatarPng(512)}" width="96" height="96" alt="Avatar: pittogramma ufficiale bianco su nero, ritagliato a cerchio" class="round">
+          <img src="kit/${avatarPng(512)}" width="48" height="48" alt="" class="round">
+          <p class="muted">Il pittogramma ufficiale white-on-dark su nero, alto metà del lato: resta intero nel ritaglio circolare dei social. È anche la favicon di questa pagina.</p>
         </div>
       </div>
     </div>
     <div class="cols-2 tight">
-      <div><h3>Sì</h3>${doList(brand.logo.do, 'do')}</div>
-      <div><h3>No</h3>${doList(brand.logo.dont, 'dont')}</div>
+      <div><h3>Sì</h3>${doList(lg.do, 'do')}</div>
+      <div><h3>No</h3>${doList(lg.dont, 'dont')}</div>
     </div>
-    <div class="dont-grid" role="list" aria-label="Esempi di usi sbagliati del logo">${donts.replace(/<figure class="dont-tile">/g, '<figure class="dont-tile" role="listitem">')}</div>`,
+    <div class="dont-grid" role="list" aria-label="Esempi di usi sbagliati del logo">${donts}</div>
+    <div class="card rights" id="diritti">
+      ${corners()}
+      <h3>Diritti e autorizzazioni</h3>
+      ${lg.rights.map((r) => `<p>${inline(r)}</p>`).join('')}
+      <p class="muted">Per chiedere l'autorizzazione: <a href="mailto:${esc(brand.identity.email)}">${esc(brand.identity.email)}</a>. Il resto del brand (soggetti, doodle, icone dei gruppi, token, testi) è sotto CC BY 4.0: vedi <a href="#partner">Partner</a>.</p>
+    </div>`,
   });
+}
+
+/** Contrasto di un colore del marchio su scuro (Console Black) e su bianco. */
+function contrastNote(tokens, name) {
+  const r = (bg) => fmtNum(contrastRatio(tokens[name], tokens[bg]), 1);
+  return `contrasto ${r('brand.color.console-black')}:1 su scuro · ${r('brand.color.white')}:1 su bianco`;
 }
 
 function colorsSection({ brand, tokens, described, groups }) {
@@ -196,7 +272,7 @@ function colorsSection({ brand, tokens, described, groups }) {
     const items = named.filter(([, t]) => t.ext.category === cat);
     return `<div class="color-group">
       <h3>${label}</h3><p class="muted">${inline(desc)}</p>
-      <div class="swatches">${items.map(([n, t]) => swatch(described, tokens, { name: n, title: t.ext.name, role: t.description, extra: telemetry(esc(t.ext.siteToken ?? ''), 'site-token') })).join('')}</div>
+      <div class="swatches">${items.map(([n, t]) => swatch(described, tokens, { name: n, title: t.ext.name, role: t.description, extra: telemetry(esc(cat === 'marchio' ? contrastNote(tokens, n) : t.ext.siteToken ?? ''), 'site-token') })).join('')}</div>
     </div>`;
   }).join('');
   // grafiche della community: accenti dei gruppi + pietra
@@ -219,7 +295,8 @@ function colorsSection({ brand, tokens, described, groups }) {
   const no = '<span class="no">no</span>';
   const scopeRows = [
     ['Neutri (mist, Void Black)', `${yes} telaio, pannelli, testo`, `${yes} sfondo mist-900, luce mist-50`],
-    ['Signal Cyan', `${yes} unico accento attivo`, `${yes} come accento di un gruppo (cyan-400)`],
+    ['Salento Cyan (sul sito oggi Signal Cyan)', `${yes} unico accento attivo, solo su scuro`, `${yes} come accento di un gruppo (cyan-400, ADR-0008)`],
+    ['Salento Dark, White, Black', `${yes} logo e marchio`, `${no} (il logo stampato è in colore sfondo)`],
     ['Violet, fuchsia', `${no} riserva, serve un ADR`, `${yes} accenti di gruppo (ADR-0008)`],
     ['Emerald, lime', no, `${yes} accenti di gruppo (ADR-0008)`],
     ['Pietra', no, `${yes} solo gruppi temporanei`],
@@ -227,7 +304,7 @@ function colorsSection({ brand, tokens, described, groups }) {
   ];
   return module({
     id: 'colori',
-    body: `${sectionHead({ id: 'colori', n: '03', eyebrow: 'Colori', title: 'Grafite, nebbia e una *spia*', desc: 'Valori dai token (`tokens/tokens.json`); nomi e ruoli dal design system del sito. Clicca su un valore per copiarlo.', tag: `${named.length} colori con nome` })}
+    body: `${sectionHead({ id: 'colori', n: '04', eyebrow: 'Colori', title: 'Grafite, nebbia e una *spia*', desc: 'Valori dai token (`tokens/tokens.json`): colori del marchio dal media kit, neutri e ruoli dal design system del sito. Clicca su un valore per copiarlo.', tag: `${named.length} colori con nome` })}
     ${groupBlocks}
     <div class="color-group" id="colori-community">
       <h3>Grafiche della community</h3>
@@ -279,7 +356,7 @@ function typographySection({ brand, described }) {
   }).join('');
   return module({
     id: 'tipografia',
-    body: `${sectionHead({ id: 'tipografia', n: '04', eyebrow: 'Tipografia', title: 'Tre famiglie, *una voce*', desc: 'Outfit per i titoli, Albert Sans per leggere, Roboto Mono per la voce «di sistema». Font open source (OFL 1.1), serviti da questa pagina.', tag: 'outfit / albert sans / roboto mono' })}
+    body: `${sectionHead({ id: 'tipografia', n: '05', eyebrow: 'Tipografia', title: 'Tre famiglie, *una voce*', desc: 'Outfit per i titoli, Albert Sans per leggere, Roboto Mono per la voce «di sistema». Font open source (OFL 1.1), serviti da questa pagina.', tag: 'outfit / albert sans / roboto mono' })}
     <div class="font-cards">${fonts.map(([name, ff, role, weights, url]) => `<article class="card font-card">
       ${corners()}
       <p class="aa" style="font-family:${ff}" aria-hidden="true">Aa</p>
@@ -305,7 +382,7 @@ function shapesSection({ brand, tokens }) {
   const spacing = [['bracket', '0.625rem'], ['card', '1.25rem'], ['control', '2.5rem'], ['page-x', '4rem'], ['section', '5rem']];
   return module({
     id: 'forme',
-    body: `${sectionHead({ id: 'forme', n: '05', eyebrow: 'Forme e layout', title: 'Angoli vivi, *niente ombre*', desc: 'Gli elementi firma del sistema, costruiti qui con gli stessi token.', tag: 'radius 0.125rem' })}
+    body: `${sectionHead({ id: 'forme', n: '06', eyebrow: 'Forme e layout', title: 'Angoli vivi, *niente ombre*', desc: 'Gli elementi firma del sistema, costruiti qui con gli stessi token.', tag: 'radius 0.125rem' })}
     <div class="demos">
       <figure class="demo">
         <div class="demo-stage radii">
@@ -367,7 +444,7 @@ function communitySection({ groups, format }) {
   ];
   return module({
     id: 'community',
-    body: `${sectionHead({ id: 'community', n: '06', eyebrow: 'Grafiche della community', title: 'Icone dei *gruppi*', desc: 'Le icone della WhatsApp Community sono generate da questo repo: un file YAML per gruppo, stesse regole per tutti.', tag: `${active.length} gruppi attivi` })}
+    body: `${sectionHead({ id: 'community', n: '07', eyebrow: 'Grafiche della community', title: 'Icone dei *gruppi*', desc: 'Le icone della WhatsApp Community sono generate da questo repo: un file YAML per gruppo, stesse regole per tutti.', tag: `${active.length} gruppi attivi` })}
     <ul class="icon-strip" aria-label="Icone dei gruppi attivi">${icons}</ul>
     <p class="actions">${cta('icone/', 'Tutte le icone e i download')}</p>
     <div class="anatomy">
@@ -389,7 +466,7 @@ function rulesSection({ brand }) {
     </div>`).join('');
   return module({
     id: 'regole',
-    body: `${sectionHead({ id: 'regole', n: '07', eyebrow: "Do's and don'ts", title: 'Da fare, da *evitare*', desc: 'Raggruppati per ambito. Per il logo vedi la sezione dedicata.', tag: 'ambiti: interfaccia / community' })}
+    body: `${sectionHead({ id: 'regole', n: '08', eyebrow: "Do's and don'ts", title: 'Da fare, da *evitare*', desc: 'Raggruppati per ambito. Per il logo vedi la sezione dedicata.', tag: 'ambiti: interfaccia / community' })}
     <div class="cols-2">${blocks}</div>`,
   });
 }
@@ -399,32 +476,35 @@ function partnersSection({ brand }) {
   const p = brand.partners;
   return module({
     id: 'partner',
-    body: `${sectionHead({ id: 'partner', n: '08', eyebrow: 'Kit per partner e soci', title: 'Usare il *nome* e il logo', desc: p.intro, tag: p.status })}
+    body: `${sectionHead({ id: 'partner', n: '09', eyebrow: 'Kit per partner e soci', title: 'Usare il *nome* e il logo', desc: p.intro, tag: p.status })}
     <div class="cols-3">
       <div class="card">${corners()}<h3>Citare Salento.dev</h3>${doList(p.naming, 'do')}<p class="muted">Regole di scrittura: <a href="#nome">come si scrive il nome</a>.</p></div>
       <div class="card">${corners()}<h3>Co-branding ${telemetry(esc(p.status), 'chip')}</h3>${doList(p.cobranding, 'do')}</div>
-      <div class="card">${corners()}<h3>Licenza</h3>${doList(p.licence, 'do')}<p class="muted">Attribuzione: «Grafiche di Salento.dev (https://salento.dev), CC BY 4.0».</p></div>
+      <div class="card">${corners()}<h3>Diritti e licenza</h3>${doList(p.licence, 'do')}<p class="muted">Attribuzione per gli asset CC BY 4.0: «Grafiche di Salento.dev (https://salento.dev), CC BY 4.0». Testi completi: <a href="#diritti">diritti sul logo</a> · <a href="${blob('LICENSE-ASSETS.md')}">LICENSE-ASSETS.md</a>.</p></div>
     </div>
     <div class="contact card">${corners()}<p class="telemetry">contatti</p><p class="contact-line"><a href="mailto:${esc(id.email)}">${esc(id.email)}</a></p><p class="muted">Per co-branding, eventi insieme e richieste di materiali. Canali: ${id.channels.map((c) => `<a href="${esc(c.url)}">${esc(c.label)}</a>`).join(' · ')}.</p></div>`,
   });
 }
 
-function downloadSection({ kit }) {
+function downloadSection({ brand, kit }) {
   const rows = [
-    ...LOGO_VARIANTS.map((v) => [`Logo ${v.label}`, v.on, [[`SVG`, `kit/logo/svg/salento-dev-logo-${v.slug}.svg`], ...LOGO_PNG_HEIGHTS.map((h) => [`PNG ${h}`, `kit/logo/png/salento-dev-logo-${v.slug}-${h}.png`])]]),
-    ['Avatar', 'profili social e chat', [['SVG', 'kit/logo/avatar/salento-dev-avatar.svg'], ...AVATAR_SIZES.map((s) => [`PNG ${s}`, `kit/logo/avatar/salento-dev-avatar-${s}.png`])]],
+    ['Logo pack ufficiale', `${brand.logo.families.length} famiglie × ${brand.logo.variants.length} varianti, SVG/PNG/WEBP, con e senza padding`, [[`ZIP · ${bytes(kit.packSize)}`, LOGO_PACK_ZIP]]],
+    ['Avatar', 'profili social, chat e favicon: pittogramma ufficiale su nero', [['SVG', `kit/${AVATAR_SVG}`], ...AVATAR_SIZES.map((s) => [`PNG ${s}`, `kit/${avatarPng(s)}`])]],
     ['Token', 'colori, font, raggi, spaziature', [['tokens.json', 'kit/token/tokens.json'], ['tokens.css', 'kit/token/tokens.css']]],
   ];
   const tree = kit.tree.map((l) => esc(l)).join('\n');
   return module({
     id: 'download',
-    body: `${sectionHead({ id: 'download', n: '09', eyebrow: 'Download', title: 'Il *kit* completo', desc: 'Un archivio con logo, avatar, icone dei gruppi, token e un LEGGIMI con le regole essenziali e la licenza. Generato a ogni aggiornamento.', tag: `zip · ${bytes(kit.zipSize)}` })}
+    body: `${sectionHead({ id: 'download', n: '10', eyebrow: 'Download', title: 'Il *kit* completo', desc: 'Un archivio con il logo pack ufficiale, l\'avatar, le icone dei gruppi, i token e un LEGGIMI con le regole essenziali e la licenza. Generato a ogni aggiornamento. I singoli file del logo sono nella sezione Logo.', tag: `zip · ${bytes(kit.zipSize)}` })}
     <div class="cols-2">
       <div class="card kit">
         ${corners()}
         <p class="telemetry">${esc(KIT_ROOT)}/ · ${kit.count} file</p>
         <pre class="tree" aria-label="Contenuto del kit">${tree}</pre>
-        ${cta(KIT_ZIP, `Scarica ${KIT_ZIP}`, `download aria-label="Scarica ${KIT_ZIP} (${bytes(kit.zipSize)})"`)}
+        <div class="actions tight-actions">
+          ${cta(KIT_ZIP, `Scarica ${KIT_ZIP}`, `download aria-label="Scarica ${KIT_ZIP} (${bytes(kit.zipSize)})"`)}
+          <a class="btn" href="${LOGO_PACK_ZIP}" download aria-label="Scarica ${LOGO_PACK_ZIP} (${bytes(kit.packSize)})">Solo il logo pack</a>
+        </div>
       </div>
       <div class="table-wrap"><table class="files">
         <caption class="sr-only">File singoli</caption>
@@ -435,21 +515,22 @@ function downloadSection({ kit }) {
   });
 }
 
-export function footerHtml({ brand, build }) {
+/** Footer comune; `base` è il prefisso verso la radice di out/ ("" o "../"). */
+export function footerHtml({ brand, build }, base = '') {
   const pv = brand.provenance;
   return `<div class="footer-inner">
-    <p>${logo({ cls: 'logo tiny' })} <b>Salento.dev</b> · Brand book generato da <a href="${REPO}">salento-dev/brand</a> @ <a href="${REPO}/commit/${esc(build.sha)}"><code>${esc(build.commit)}</code></a> il ${esc(build.dateLabel)}.</p>
-    <p class="muted">Fonte di verità: questo repo (<a href="${blob('docs/04_decisioni_architetturali/0011_repo_brand_fonte_di_verita.md')}">ADR-0011</a>). Regole importate da ${esc(pv.source)}, ${esc(pv.ref)}, ${esc(pv.imported)}. Codice MIT · asset CC BY 4.0 · marchio escluso.</p>
+    <p>${logo({ base, cls: 'logo tiny' })} <b>Salento.dev</b> · Brand book generato da <a href="${REPO}">salento-dev/brand</a> @ <a href="${REPO}/commit/${esc(build.sha)}"><code>${esc(build.commit)}</code></a> il ${esc(build.dateLabel)}.</p>
+    <p class="muted">Fonte di verità: questo repo (<a href="${blob('docs/04_decisioni_architetturali/0011_repo_brand_fonte_di_verita.md')}">ADR-0011</a>). Logo dal <a href="${esc(brand.logo.provenance.url)}">media kit</a> (${esc(brand.logo.provenance.imported)}); regole importate da ${esc(pv.source)}, ${esc(pv.ref)}, ${esc(pv.imported)}. Logo, wordmark e nome: tutti i diritti riservati · altri asset CC BY 4.0 · codice MIT.</p>
   </div>`;
 }
 
 export function bookPage(ctx) {
   return page({
     title: 'Salento.dev — Brand',
-    description: `Brand book di Salento.dev: logo, colori, tipografia, regole e kit per community, partner e soci.`,
+    description: `Brand book di Salento.dev: logo ufficiale, descrizioni, colori, tipografia, regole e kit per community, partner e soci.`,
     base: '',
     nav: SECTIONS.map(([id, label]) => [`#${id}`, label]),
-    main: [hero(ctx), essence(ctx), logoSection(ctx), colorsSection(ctx), typographySection(ctx), shapesSection(ctx), communitySection(ctx), rulesSection(ctx), partnersSection(ctx), downloadSection(ctx)].join('\n'),
+    main: [hero(ctx), essence(ctx), descriptionsSection(ctx), logoSection(ctx), colorsSection(ctx), typographySection(ctx), shapesSection(ctx), communitySection(ctx), rulesSection(ctx), partnersSection(ctx), downloadSection(ctx)].join('\n'),
     footer: footerHtml(ctx),
   });
 }

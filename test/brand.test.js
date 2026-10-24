@@ -4,7 +4,7 @@ import { loadTokens, loadTokenTree, describeTokens, resolveTokens } from '../src
 import { oklchToHex, parseOklch } from '../src/color.js';
 import { loadBrand, SCOPES } from '../src/brand.js';
 import { tokensCss } from '../src/tokens-css.js';
-import { CLEAR_SPACE, LOGO, logoSvg } from '../src/logo.js';
+import { FAMILIES, VARIANTS } from '../src/logo.js';
 
 const tokens = loadTokens();
 const described = describeTokens(loadTokenTree());
@@ -43,7 +43,7 @@ test('i colori con nome di DESIGN.md risolvono e corrispondono all\'OKLCH del si
 });
 
 test('ogni colore con nome ha una categoria nota e un hex', () => {
-  const cats = new Set(['neutri', 'primario', 'riserva', 'funzionali', 'community']);
+  const cats = new Set(['marchio', 'neutri', 'primario', 'riserva', 'funzionali', 'community']);
   for (const [name, t] of Object.entries(described).filter(([n]) => n.startsWith('brand.color.'))) {
     assert.ok(cats.has(t.ext.category), `${name}: categoria ${t.ext.category}`);
     assert.match(t.value, /^#[0-9a-f]{6}$/, name);
@@ -74,13 +74,40 @@ test('brand.yaml valido, regole con ambito e niente link di invito', () => {
   assert.ok(brand.rules.some((r) => r.id === 'one-signal' && r.scope === 'interfaccia'));
   assert.ok(brand.rules.some((r) => r.scope === 'community'));
   assert.doesNotMatch(JSON.stringify(brand), /chat\.whatsapp\.com/);
-  for (const c of brand.logo.colors) assert.ok(tokens[c.token], c.token);
+  for (const v of brand.logo.variants) for (const t of [v.ink, v.background]) assert.ok(tokens[t], t);
 });
 
-test('logo: area di rispetto = una riga di barre, SVG colorato', () => {
-  assert.ok(Math.abs(CLEAR_SPACE - 19.26) < 0.01);
-  assert.ok(CLEAR_SPACE / LOGO.height > 0.18 && CLEAR_SPACE / LOGO.height < 0.19);
-  const svg = logoSvg({ color: '#090b0c', margin: CLEAR_SPACE });
-  assert.match(svg, /<g fill="#090b0c">/);
-  assert.match(svg, /viewBox="-19\.26 -19\.26 128\.52 143\.52"/);
+test('brand.yaml: logo con le 4 famiglie e le 3 varianti del media kit, provenienza e diritti', () => {
+  const { logo } = loadBrand();
+  assert.deepEqual(logo.families.map((f) => f.id), FAMILIES);
+  assert.deepEqual(logo.variants.map((v) => v.id), VARIANTS);
+  assert.equal(logo.provenance.url, 'https://salento.dev/sd-media-kit-2026/');
+  assert.match(logo.rights.join(' '), /Tutti i diritti riservati/);
+  assert.match(logo.rights.join(' '), /preventiva\s+autorizzazione/);
+});
+
+test('descrizioni ufficiali: tre testi, il nome si scrive Salento.dev', () => {
+  const { descriptions, identity } = loadBrand();
+  assert.deepEqual(descriptions.items.map((d) => d.id), ['breve', 'media', 'lunga']);
+  for (const d of descriptions.items) {
+    assert.match(d.text, /^Salento\.dev /);
+    assert.doesNotMatch(d.text, /Salento\.Dev|Salento Dev/);
+  }
+  assert.ok(identity.naming.dont[0].includes('Salento.Dev'));
+});
+
+test('colori del marchio: Salento Cyan è il primario, Signal Cyan resta come colore attuale del sito', () => {
+  assert.equal(tokens['brand.color.salento-cyan'], '#20d0ed');
+  assert.equal(tokens['brand.color.salento-dark'], '#1d1e1c');
+  assert.equal(tokens['brand.color.white'], '#ffffff');
+  assert.equal(tokens['brand.color.black'], '#000000');
+  assert.equal(tokens['semantic.primary'], '#20d0ed');
+  assert.equal(tokens['semantic.accent'], '#20d0ed');
+  assert.equal(tokens['brand.color.signal-cyan'], tokens['color.cyan.500']);
+  assert.match(described['brand.color.signal-cyan'].description, /da migrare a Salento Cyan/);
+  for (const n of ['salento-cyan', 'salento-dark', 'white', 'black']) assert.equal(described[`brand.color.${n}`].ext.category, 'marchio');
+  // le superfici del sito non cambiano
+  assert.equal(tokens['semantic.bg'], tokens['color.mist.950']);
+  assert.equal(tokens['semantic.surface'], tokens['color.mist.900']);
+  assert.equal(tokens['group.accents.cyan.accent'], tokens['color.cyan.400']);
 });
