@@ -1,12 +1,13 @@
 # 01 · Token e palette
 
-> Fonte: [`tokens/tokens.json`](../../tokens/tokens.json) (formato W3C DTCG). Decisioni: [ADR-0003](../04_decisioni_architetturali/0003_token_dtcg_allineati_al_sito.md), [ADR-0008](../04_decisioni_architetturali/0008_accento_per_gruppo.md).
+> Fonte: [`tokens/tokens.json`](../../tokens/tokens.json) (formato W3C DTCG). Decisioni: [ADR-0003](../04_decisioni_architetturali/0003_token_dtcg_allineati_al_sito.md), [ADR-0008](../04_decisioni_architetturali/0008_accento_per_gruppo.md), [ADR-0011](../04_decisioni_architetturali/0011_repo_brand_fonte_di_verita.md) (livello `brand`, tipografia, spaziature). Questo repo è la fonte di verità: il sito si allinea a questi valori.
 
 ## Livelli
 
 ```
 primitive                     ruoli
-color.mist.*, color.cyan.*  ─▶ semantic.*            galleria e formati futuri (cover eventi)
+color.*                     ─▶ brand.color.*         colori con nome e ruolo (DESIGN.md): Signal Cyan, Console Black…
+color.mist.*, color.cyan.*  ─▶ semantic.*            brand book, galleria e formati futuri (cover eventi)
 color.violet.*, fuchsia.*,  ─▶ group.icon.*          sfondo e luce delle icone dei gruppi
 emerald.*, lime.*           ─▶ group.accents.<nome>  accenti ammessi per i gruppi permanenti
 color.pietra, pietra-dark   ─▶ group.temporary       accento fisso dei gruppi temporanei
@@ -15,7 +16,28 @@ color.pietra, pietra-dark   ─▶ group.temporary       accento fisso dei grupp
 
 Le primitive Tailwind sono convertite da OKLCH (`tailwindcss/theme.css` del sito) in hex; l'OKLCH originale resta in `$extensions["dev.salento"].oklch` e un test verifica che hex e OKLCH coincidano.
 
-## Ruoli semantic (galleria)
+## Colori con nome (`brand.color.*`)
+
+Alias alle primitive, importati da `DESIGN.md` del sito. In `$extensions["dev.salento"]`: `name`, `category`, `siteToken` e `designMd` (il valore originale: un test verifica che coincida con l'hex). Il ruolo è in `$description`.
+
+| Categoria | Colori |
+|-----------|--------|
+| neutri | Void Black `black` · Console Black `mist-950` · Panel Graphite `mist-900` · Control Graphite `mist-800` · Raised Graphite `mist-700` · Bracket Grey `mist-600` · Muted Mist `mist-400` · Body Mist `mist-300` · Soft Mist `mist-200` · Bright Mist `mist-50` |
+| primario | Signal Cyan `cyan-500` · Signal Cyan Deep `cyan-700` · Signal Cyan Pale `cyan-300` · Signal Cyan Wash `cyan-50` |
+| riserva | Reserve Violet `violet-500` · Reserve Fuchsia `fuchsia-500` |
+| funzionali | WhatsApp Green `green-400` · WIP Amber `amber-500` |
+| community | Pietra · Pietra in ombra |
+
+Le regole d'uso (One Signal, Reserve, Brand-Borrow…) e il loro ambito sono in `content/brand/brand.yaml` ([ADR-0012](../04_decisioni_architetturali/0012_ambiti_interfaccia_e_grafiche_community.md)).
+
+## Tipografia, raggi e spaziature
+
+- `typography.*` (token compositi): `display`, `display-page`, `headline`, `title`, `body`, `body-lead`, `eyebrow`, `telemetry`. `fontSize` è il valore desktop; `responsive` e `textTransform` sono in `$extensions`. Gli alias dentro i valori composti (`{font.outfit}`) sono risolti da `src/tokens.js`.
+- `radius.xs` (2px = 0.125rem) è il default del sistema (`semantic.radius`); `radius.full` solo per pill.
+- `spacing.bracket|card|control|page-x|section|hero-y`: spaziature con nome di DESIGN.md (in px, rem in `$extensions`).
+- `tokens.css` (nel kit e in `out/assets/`) espone tutto come custom properties: `--brand-color-signal-cyan`, `--typography-display-font-size`, `--radius-xs`…
+
+## Ruoli semantic (brand book e galleria)
 
 | Token | Valore | Hex | Uso |
 |-------|--------|-----|-----|
@@ -24,7 +46,7 @@ Le primitive Tailwind sono convertite da OKLCH (`tailwindcss/theme.css` del sito
 | `border` | `mist-800` | `#22292b` | bordi |
 | `text` | `mist-50` | `#f9fbfb` | testo |
 | `text-muted` | `mist-400` | `#9ca8ab` | testo secondario |
-| `accent` | `cyan-500` | `#00b8db` | link, logo |
+| `accent` | `cyan-500` | `#00b8db` | link |
 | `secondary` | `violet-500` | `#8e51ff` | riservato |
 
 ## Icone dei gruppi
@@ -68,6 +90,6 @@ Per aggiungere un accento: primitive nei token (con OKLCH), voce in `group.accen
 
 Dettagli in [Soggetti](../02_icone_gruppi/02_soggetti.md).
 
-## Font e raggi
+## Font
 
-I token `font.*` (Outfit, Albert Sans, Roboto Mono) e `radius.*` restano allineati al sito ma **non sono usati dalle icone** (niente testo): serviranno alle cover eventi (fase 2).
+I token `font.*` (Outfit, Albert Sans, Roboto Mono) sono usati dal brand book (font self-hosted da `@fontsource-variable/*`) ma **non dalle icone** (niente testo).
