@@ -1,4 +1,4 @@
-// Valida tutto: token (alias + contrasto), soggetti, doodle e set, gruppi, schema esportato aggiornato.
+// Valida tutto: token (alias + contrasto), identità del brand, soggetti, doodle e set, gruppi, schema esportato aggiornato.
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadTokens, themeFor, accentNames, iconPalette, placeholders } from '../src/tokens.js';
@@ -9,6 +9,7 @@ import { lintDoodle, loadDoodleSets, checkDoodleSets } from '../src/doodles.js';
 import { subjectMaxRadius, SAFE_RADIUS } from '../formats/icon.js';
 import { DOODLES_DIR } from '../src/paths.js';
 import { SCHEMA_FILE, schemaText } from './schema.js';
+import { loadBrand } from '../src/brand.js';
 
 let failures = 0;
 const fail = (where, msg) => {
@@ -44,6 +45,16 @@ try {
   if (ph.includes(null) || new Set(ph).size !== 4) fail('tokens placeholder', 'servono 4 colori segnaposto esadecimali distinti');
 } catch (e) {
   fail('tokens/tokens.json', e.message);
+}
+
+// 1b. Identità e regole del brand (content/brand/brand.yaml): schema + token citati esistenti
+try {
+  const brand = loadBrand();
+  const missing = brand.logo.colors.map((c) => c.token).filter((t) => !tokens?.[t]);
+  if (missing.length) fail('content/brand/brand.yaml', `token inesistenti: ${missing.join(', ')}`);
+  else ok(`content/brand/brand.yaml (${brand.rules.length} regole)`);
+} catch (e) {
+  fail('content/brand/brand.yaml', e.message);
 }
 
 // 2. Soggetti: lint + area sicura

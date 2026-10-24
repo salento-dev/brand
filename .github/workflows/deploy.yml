@@ -1,4 +1,4 @@
-# Genera tutte le immagini e la galleria e le pubblica su GitHub Pages.
+# Genera tutte le immagini, il brand book (index.html), la galleria (icone/) e il kit, e li pubblica su GitHub Pages.
 # Le immagini non sono versionate nel repo (vedi ADR-0006).
 name: Deploy
 
@@ -28,7 +28,7 @@ jobs:
       - run: npm ci
       - run: npm run validate
       - run: npm run generate -- --include-archived
-      - run: npm run gallery
+      - run: npm run site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out/

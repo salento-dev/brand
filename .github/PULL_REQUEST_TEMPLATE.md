@@ -8,7 +8,7 @@ Closes #
 
 - [ ] Nuovo gruppo / modifica di un gruppo (`content/groups/`)
 - [ ] Nuovo soggetto o doodle (`assets/subjects/`, `assets/doodles/`)
-- [ ] Token, formati o libreria (richiede revisione del core team)
+- [ ] Token, regole del brand (`content/brand/`), formati o libreria (richiede revisione del core team)
 - [ ] Script / CI
 - [ ] Documentazione
 

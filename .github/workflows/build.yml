@@ -1,4 +1,4 @@
-# Valida e genera le immagini di una PR. Gira con permessi in sola lettura:
+# Valida e genera le immagini di una PR e il sito (brand book + galleria + kit). Gira con permessi in sola lettura:
 # il commento con le anteprime lo pubblica preview-comment.yml (workflow_run).
 name: Build
 
@@ -34,7 +34,10 @@ jobs:
           echo "File modificati:"; cat changed.txt
           npm run generate -- --only "$(cat changed.txt)"
 
-      - run: npm run gallery
+      - name: Brand book, galleria e kit
+        env:
+          BRAND_COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        run: npm run site
 
       - name: Prepara l'artifact
         env:

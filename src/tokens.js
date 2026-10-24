@@ -25,8 +25,13 @@ export function resolveTokens(tree) {
     if (!(name in flat)) throw new Error(`Token sconosciuto: {${name}}${stack.length ? ` (da ${stack.at(-1)})` : ''}`);
     if (stack.includes(name)) throw new Error(`Alias circolare: ${[...stack, name].join(' -> ')}`);
     const { value } = flat[name];
-    const match = typeof value === 'string' && value.match(ALIAS);
-    resolved[name] = match ? resolve(match[1], [...stack, name]) : value;
+    const alias = (v) => {
+      const match = typeof v === 'string' && v.match(ALIAS);
+      return match ? resolve(match[1], [...stack, name]) : v;
+    };
+    // valori composti (es. typography): gli alias si risolvono campo per campo
+    const composite = value && typeof value === 'object' && !Array.isArray(value) && !('unit' in value);
+    resolved[name] = composite ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, alias(v)])) : alias(value);
     return resolved[name];
   };
   for (const name of Object.keys(flat)) resolve(name);
@@ -36,6 +41,26 @@ export function resolveTokens(tree) {
 export function loadTokens(file = TOKENS_FILE) {
   return resolveTokens(JSON.parse(fs.readFileSync(file, 'utf8')));
 }
+
+/** Token con metadati: { 'brand.color.signal-cyan': { value, type, description, extensions } } (valori risolti). */
+export function describeTokens(tree) {
+  const values = resolveTokens(tree);
+  const out = {};
+  const walk = (node, prefix, inheritedType) => {
+    for (const [key, child] of Object.entries(node)) {
+      if (key.startsWith('$') || child === null || typeof child !== 'object') continue;
+      const name = prefix ? `${prefix}.${key}` : key;
+      const type = child.$type ?? inheritedType;
+      if ('$value' in child) {
+        out[name] = { value: values[name], raw: child.$value, type, description: child.$description, ext: child.$extensions?.['dev.salento'] ?? {} };
+      } else walk(child, name, type);
+    }
+  };
+  walk(tree, '', undefined);
+  return out;
+}
+
+export const loadTokenTree = (file = TOKENS_FILE) => JSON.parse(fs.readFileSync(file, 'utf8'));
 
 /** Converte una dimensione DTCG ({value, unit} o "4px") in numero di pixel. */
 export const px = (dim) => (typeof dim === 'number' ? dim : typeof dim === 'string' ? parseFloat(dim) : dim.value);

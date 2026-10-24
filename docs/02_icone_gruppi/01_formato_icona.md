@@ -65,4 +65,4 @@ WhatsApp mostra già il nome accanto all'icona; a 48px un testo sarebbe illeggib
 
 ## Come verificare
 
-`npm run generate && npm run gallery`, poi apri `out/index.html`: in alto la **lista chat simulata** (tema scuro) con tutti i gruppi attivi, poi per ogni gruppo il 640 ritagliato a cerchio, le versioni a 96 e 48px e i link di download.
+`npm run generate && npm run site`, poi apri `out/icone/index.html`: in alto la **lista chat simulata** (tema scuro) con tutti i gruppi attivi, poi per ogni gruppo il 640 ritagliato a cerchio, le versioni a 96 e 48px e i link di download.

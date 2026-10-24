@@ -118,7 +118,7 @@ jobs:
               done
             fi
             echo
-            echo "Galleria completa: artifact \`gallery\` della [build]($RUN_URL)."
+            echo "Brand book, galleria e kit: artifact \`gallery\` della [build]($RUN_URL) (apri \`index.html\`)."
           } > body.md
 
           id=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \

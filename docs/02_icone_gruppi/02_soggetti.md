@@ -48,5 +48,5 @@ Ammessi anche `none` e `url(#id)` verso un `clipPath` interno. Esadecimali corti
 1. Apri la issue **Nuovo soggetto o doodle** con l'idea.
 2. Disegna (Figma, Inkscape o a mano nell'editor) su 160×160 con i 4 segnaposto; esporta "SVG minimale" e ripulisci (niente metadati, niente `style`).
 3. Salva in `assets/subjects/<nome>.svg` (kebab-case, in inglese come gli altri) con un commento iniziale che descrive il soggetto.
-4. Usalo in un gruppo (`subject: <nome>`), poi `npm run validate && npm run generate && npm run gallery` e controlla 640/96/48 e la lista chat.
+4. Usalo in un gruppo (`subject: <nome>`), poi `npm run validate && npm run generate && npm run site` e controlla 640/96/48 e la lista chat.
 5. Apri la PR: le anteprime arrivano nel commento automatico.

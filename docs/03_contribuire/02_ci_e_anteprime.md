@@ -2,9 +2,9 @@
 
 | Workflow | Quando | Permessi | Cosa fa |
 |----------|--------|----------|---------|
-| `build.yml` | ogni PR | sola lettura | `npm ci`, validate, test, generate dei soli file toccati, galleria, artifact `preview` + `gallery` |
+| `build.yml` | ogni PR | sola lettura | `npm ci`, validate, test, generate dei soli file toccati, `npm run site` (brand book, galleria, kit), artifact `preview` + `gallery` (tutto `out/`) |
 | `preview-comment.yml` | Build completato | scrittura | verifica l'artifact, pubblica i PNG su `previews/pr-<n>/`, commento unico sulla PR |
-| `deploy.yml` | push su `main`, manuale | Pages | genera tutto + galleria, pubblica su GitHub Pages |
+| `deploy.yml` | push su `main`, manuale | Pages | genera tutto + `npm run site`, pubblica su GitHub Pages (brand book in `/`, galleria in `/icone/`, kit in `/brand-kit.zip`) |
 | `expired.yml` | lunedì 07:00 UTC, manuale | issues | issue "Gruppi temporanei da archiviare" (label `archiviazione`) |
 
 ## Generazione incrementale
