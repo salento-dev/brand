@@ -22,4 +22,4 @@ Le regole complete (viewBox, solo `currentColor`, capi tondi, niente archi `A`, 
 
 1. Disegna su `viewBox="0 0 96 96"` con tratto `currentColor` (spessore indicativo 3: viene comunque normalizzato), capi e giunzioni tondi.
 2. Salva in `assets/doodles/<nome>.svg` con il commento iniziale (nome e provenienza; per icone di terzi: fonte, autore, licenza).
-3. Aggiungilo ai `doodles` di un gruppo, `npm run validate && npm run generate && npm run gallery`.
+3. Aggiungilo ai `doodles` di un gruppo, `npm run validate && npm run generate && npm run site`.

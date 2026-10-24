@@ -10,11 +10,15 @@ Grazie per voler contribuire! Guida rapida; i dettagli sono in [`docs/`](docs/RE
    ```bash
    npm run validate
    npm test
-   npm run generate -- --only content/groups/<slug>.yaml && npm run gallery
+   npm run generate -- --only content/groups/<slug>.yaml && npm run site
    ```
 4. **Apri la PR** verso `main` con il template; nella descrizione `Closes #N`. Le anteprime arrivano in un commento automatico.
 
-Le modifiche a `tokens/`, `formats/`, `src/`, `assets/` e `.github/` richiedono la revisione del core team (CODEOWNERS).
+Le modifiche a `tokens/`, `content/brand/`, `formats/`, `src/`, `assets/` e `.github/` richiedono la revisione del core team (CODEOWNERS).
+
+## Aggiornare le regole del brand
+
+Questo repo è la fonte di verità del brand ([ADR-0011](docs/04_decisioni_architetturali/0011_repo_brand_fonte_di_verita.md)): testi e regole in `content/brand/brand.yaml`, valori (colori con nome, tipografia, raggi, spaziature) in `tokens/tokens.json`. Ogni regola ha un ambito (`interfaccia`, `community`, `tutti`: [ADR-0012](docs/04_decisioni_architetturali/0012_ambiti_interfaccia_e_grafiche_community.md)); attivare un colore di riserva o un nuovo accento richiede un ADR. Poi `npm run validate && npm test && npm run site` e controlla `out/index.html`. Guida: [Aggiornare le regole del brand](docs/06_brand_book/02_aggiornare_le_regole.md).
 
 ## Aggiungi un gruppo in 5 passi
 
@@ -32,7 +36,7 @@ Le modifiche a `tokens/`, `formats/`, `src/`, `assets/` e `.github/` richiedono 
    ```
    Per un gruppo `temporary` togli `accent` (è sempre pietra) e aggiungi `starts` e `ends` (`AAAA-MM-GG`).
 3. **Scegli soggetto e colore** — un soggetto esistente ([elenco](docs/02_icone_gruppi/02_soggetti.md)) o uno nuovo (vedi la guida); un accento non usato da altri permanenti (altrimenti `validate` avvisa).
-4. **Controlla** — `npm run validate && npm run generate -- --only content/groups/<slug>.yaml && npm run gallery`, poi apri `out/index.html`: guarda il 640, le versioni a 96/48px e la lista chat simulata.
+4. **Controlla** — `npm run validate && npm run generate -- --only content/groups/<slug>.yaml && npm run site`, poi apri `out/icone/index.html`: guarda il 640, le versioni a 96/48px e la lista chat simulata.
 5. **Apri la PR** con `Closes #N` e controlla l'anteprima nel commento automatico.
 
 Mai inserire link di invito WhatsApp o dati personali.
@@ -48,10 +52,11 @@ Mai inserire link di invito WhatsApp o dati personali.
 | Doodle e wallpaper | [03_doodle](docs/02_icone_gruppi/03_doodle.md) |
 | Aggiungere un gruppo | [01_aggiungere_un_gruppo](docs/03_contribuire/01_aggiungere_un_gruppo.md) |
 | CI e anteprime | [02_ci_e_anteprime](docs/03_contribuire/02_ci_e_anteprime.md) |
+| Brand book e kit | [01_brand_book](docs/06_brand_book/01_brand_book.md) · [02_aggiornare_le_regole](docs/06_brand_book/02_aggiornare_le_regole.md) |
 | Decisioni (ADR) | [04_decisioni_architetturali](docs/04_decisioni_architetturali/README.md) |
 
 ## Code style
 
 - JavaScript ESM, Node 22, nessun build step.
 - Codice piccolo e leggibile: funzioni semplici, commenti in italiano, niente astrazioni premature.
-- Il codice legge i colori **solo** dai token (`themeFor`, `iconPalette`), mai colori scritti a mano; i soggetti usano solo i 4 segnaposto.
+- Il codice legge i colori **solo** dai token (`themeFor`, `iconPalette`, `--brand-color-*` in `tokens.css`), mai colori scritti a mano; i soggetti usano solo i 4 segnaposto.

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "description": "Salento.dev design system as code: grafiche della community generate da dati YAML versionati.",
+  "description": "Salento.dev brand: fonte di verità dell'identità visiva (brand book) e grafiche della community generate da dati YAML versionati.",
   "type": "module",
   "engines": {
     "node": ">=22"
@@ -12,7 +12,8 @@
     "schema": "node scripts/schema.js",
     "validate": "node scripts/validate.js",
     "generate": "node scripts/generate.js",
-    "gallery": "node scripts/gallery.js",
+    "site": "node scripts/site.js",
+    "gallery": "node scripts/site.js",
     "check-expired": "node scripts/check-expired.js",
     "test": "node --test \"test/**/*.test.js\""
   },
@@ -20,5 +21,10 @@
     "@resvg/resvg-js": "2.6.2",
     "js-yaml": "5.5.0",
     "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@fontsource-variable/albert-sans": "5.3.0",
+    "@fontsource-variable/outfit": "5.3.0",
+    "@fontsource-variable/roboto-mono": "5.3.0"
   }
 }

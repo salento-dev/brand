@@ -1,0 +1,215 @@
+# Identità e regole del brand Salento.dev: fonte di verità (ADR-0011).
+# Colori, tipografia, raggi e spaziature sono in tokens/tokens.json; qui stanno testi e regole.
+# La pagina brand (npm run site) e il LEGGIMI del kit si generano da questo file.
+# Formattazione ammessa nei testi: **grassetto** e `codice`.
+
+provenance:
+  source: salento-dev/website · DESIGN.md
+  ref: branch chore/design-system-cleanup @ fb3aab5
+  imported: 2026-10-24
+  note: >-
+    Contenuto di marca importato dal DESIGN.md del sito (North Star, colori con nome, Named Rules,
+    tipografia, forme, Do's and Don'ts) e dai Brand Commitments di PRODUCT.md. Esclusi l'uso dei componenti
+    Blade e le parti interne del prodotto. Da qui in avanti le regole si cambiano in questo repo.
+
+identity:
+  name: Salento.dev
+  domain: salento.dev
+  site: https://salento.dev
+  email: salento.dev@gmail.com
+  language: italiano
+  tagline: La community di sviluppatori del Salento. Eventi dal vivo, persone vere, codice aperto.
+  channels:
+    - { label: Sito, url: 'https://salento.dev', note: 'eventi, risorse, partner e link al gruppo WhatsApp' }
+    - { label: Instagram, url: 'https://www.instagram.com/salento.dev/', note: '@salento.dev' }
+    - { label: LinkedIn, url: 'https://it.linkedin.com/company/salento-dev', note: 'company/salento-dev' }
+    - { label: WhatsApp Community, url: 'https://salento.dev', note: 'si entra dal sito: il link di invito non si pubblica altrove' }
+  naming:
+    do:
+      - '**Salento.dev** nel testo: S maiuscola, punto, `dev` minuscolo.'
+      - '`salento.dev` minuscolo solo come indirizzo (dominio, URL, handle).'
+      - Maiuscolo (`SALENTO.DEV`) solo dentro etichette di telemetria, dove tutto il testo è maiuscolo.
+    dont:
+      - SalentoDev, Salento Dev, Salento-dev, SALENTO DEV, salento.Dev
+      - Tradurre o abbreviare il nome (es. «SD», «Salento Developers»).
+
+northStar:
+  name: The Night Console
+  text:
+    - >-
+      Il brand è un pannello di controllo acceso di notte. Un telaio nero punteggiato fa da banco; sopra, un unico
+      pannello incorniciato da bordi a 1px ospita tutto il contenuto, diviso in moduli da linee sottili e piccoli
+      triangoli di giunzione. Dentro il pannello la luce è una sola: il **cyan**, usato come spia accesa. Tutto il
+      resto è grafite e nebbia.
+    - >-
+      Titoli grandi in **Outfit**, testo di lettura in **Albert Sans** e una fascia di etichette mono maiuscole e
+      spaziate che leggono come telemetria (`root@salento.dev`, `Upcoming: 3`). Le **staffe d'angolo** sono la firma.
+      Il sistema è **esclusivamente scuro**: non esiste una variante chiara e non va inventata.
+  traits:
+    - Telaio nero a puntini + pannello con bordi 1px e giunzioni triangolari.
+    - Un solo accento attivo nell'interfaccia (cyan); violet e fuchsia sono riserva.
+    - Profondità solo tonale, nessuna ombra.
+    - Angoli quasi vivi; pill solo per CTA, badge e stati.
+    - Etichette mono maiuscole come voce «di sistema».
+    - Staffe d'angolo come firma.
+
+# Ambiti delle regole (ADR-0012). Ogni regola ha un ambito: interfaccia, community o tutti.
+scopes:
+  interfaccia:
+    label: Interfaccia
+    text: >-
+      Sito, questa pagina e ogni superficie «da schermo» (slide, banner, materiali con testo e layout).
+      Vale la palette del sito: neutri + Signal Cyan; riserva e prestiti funzionali solo come da regole.
+  community:
+    label: Grafiche della community
+    text: >-
+      Illustrazioni generate da questo repo per i canali della community: oggi le **icone dei gruppi WhatsApp**.
+      Ogni gruppo permanente ha un accento (fuchsia, violet, cyan, emerald, lime) e i temporanei la **pietra**:
+      è la decisione esplicita richiesta dalla Reserve Rule (ADR-0008). Gli accenti restano dentro le icone.
+  tutti:
+    label: Tutti gli ambiti
+    text: Logo, nome, tipografia e tema scuro valgono ovunque.
+
+rules:
+  - id: one-signal
+    section: colori
+    name: The One Signal Rule
+    scope: interfaccia
+    text: >-
+      Il cyan è l'unica luce accesa. Va su etichette, link, stati e una parola per titolo, mai su sfondi pieni di
+      grandi superfici. Se una schermata ha più di una manciata di elementi cyan, uno è di troppo.
+  - id: reserve
+    section: colori
+    name: The Reserve Rule
+    scope: interfaccia
+    text: >-
+      Violet e fuchsia esistono come token ma non sono voci attive dell'interfaccia. Non introdurli senza una
+      decisione esplicita (un ADR). Gli accenti dei gruppi WhatsApp sono una di queste decisioni (ADR-0008) e valgono
+      solo dentro le icone dei gruppi.
+  - id: brand-borrow
+    section: colori
+    name: The Brand-Borrow Rule
+    scope: interfaccia
+    text: >-
+      Verde e ambra sono prestiti funzionali, non accenti di marca: **WhatsApp Green** solo per il canale WhatsApp e
+      lo stato «in corso», **WIP Amber** solo per gli eventi in pianificazione. Mai come decorazione.
+  - id: legacy-amber
+    section: colori
+    name: The Legacy Amber Rule
+    scope: interfaccia
+    text: >-
+      Glow, gradienti e ombre ambra/arancio sono residui di una palette precedente. Non usarli.
+  - id: pietra
+    section: colori
+    name: The Pietra Rule
+    scope: community
+    text: >-
+      La **pietra** (`#E2B45A`, pietra leccese) è il colore dei gruppi temporanei nelle grafiche della community.
+      Non è l'ambra WIP e non è un segnale di avviso: non usarla nell'interfaccia al posto dell'ambra, né l'ambra
+      nelle icone al posto della pietra.
+  - id: accent-per-group
+    section: colori
+    name: The Group Accent Rule
+    scope: community
+    text: >-
+      Un accento per gruppo permanente, scelto tra quelli nei token (`group.accents`); i temporanei sono sempre
+      pietra. Niente colori liberi: un nuovo accento passa da token, schema e controllo di contrasto.
+  - id: telemetry-voice
+    section: tipografia
+    name: The Telemetry Voice Rule
+    scope: tutti
+    text: >-
+      Le etichette di sistema (stati, conteggi, percorsi, categorie) sono mono maiuscolo spaziato a 0.625rem. Il
+      testo che si legge davvero non è mai mono.
+  - id: one-mono
+    section: tipografia
+    name: The One Mono Rule
+    scope: tutti
+    text: Roboto Mono è l'unico monospace. Non introdurne altri.
+  - id: tonal-step
+    section: forme
+    name: The Tonal Step Rule
+    scope: interfaccia
+    text: >-
+      Un elemento che deve «salire» passa al gradino grafite successivo o prende un bordo 1px. Mai un box-shadow.
+  - id: hover-tint
+    section: forme
+    name: The Hover Tint Rule
+    scope: interfaccia
+    text: >-
+      L'hover di una superficie si esprime con un velo cyan al 5% o un gradino tonale, non con elevazione.
+
+logo:
+  description: >-
+    Sei righe di barre orizzontali che compongono una forma a «S»: codice indentato visto da lontano.
+    Il logo è solo il simbolo; il nome si scrive accanto in Outfit.
+  colors:
+    - { token: brand.color.bright-mist, use: 'Versione principale, su fondi scuri (è il colore del logo sul sito).' }
+    - { token: brand.color.signal-cyan, use: 'Su fondi scuri, quando il logo è l''unico elemento acceso.' }
+    - { token: brand.color.console-black, use: 'Su fondi chiari di materiali di terzi (locandine dei partner, documenti stampati).' }
+  lightRule: >-
+    Il brand è solo scuro: i nostri materiali non hanno versioni chiare. Se un partner deve mettere il logo su un
+    fondo chiaro usa la versione **Console Black**, mai il logo bianco o cyan su chiaro.
+  do:
+    - Usare i file del kit, senza ridisegnare le barre.
+    - Rispettare l'area di rispetto e la dimensione minima.
+    - Scegliere la versione in base al fondo (chiaro su scuro, Console Black su chiaro).
+  dont:
+    - Ricolorare fuori dai tre colori ammessi, o con gradienti.
+    - Deformare (allungare, schiacciare) o ruotare.
+    - Aggiungere effetti (ombre, glow, bagliori, rilievi).
+    - Disegnarlo solo con il contorno (outline).
+    - Metterlo su fondi fotografici o a basso contrasto senza un pannello scuro dietro.
+    - Inserirlo in frasi o usarlo come lettera.
+
+dosAndDonts:
+  - scope: interfaccia
+    do:
+      - Tenere tutto dentro il pannello bordato; nuove sezioni sono moduli separati da bordi 1px.
+      - Usare il cyan per una parola per titolo, eyebrow, link e stati attivi, e basta.
+      - Dare profondità con gradini grafite (950 → 900 → 800 → 700) e bordi in Control Graphite.
+      - Usare angoli 0.125rem di default e pill solo per CTA, badge e stati.
+      - Scrivere le etichette di sistema in mono maiuscolo 0.625rem spaziato.
+      - Usare le staffe d'angolo come cornice e segnale d'hover delle superfici cliccabili.
+      - Animare con transizioni brevi (0.2–0.5s) innescate da hover o focus.
+    dont:
+      - Introdurre un tema chiaro o superfici chiare estese (la CTA pill è l'unica eccezione).
+      - Usare box-shadow, alone o glow.
+      - Usare gradienti ambra o testo «luminoso» nei titoli.
+      - Attivare violet o fuchsia come accenti senza una decisione esplicita.
+      - Usare verde o ambra fuori da WhatsApp/live e WIP.
+      - Usare raggi grandi (0.375rem e oltre) su card e contenitori.
+      - Scrivere colori a mano invece dei token.
+  - scope: community
+    do:
+      - Un soggetto unico, riconoscibile a 48px, con il logo stampato sopra in colore sfondo.
+      - Forme piene, raggi coerenti, ombra piatta a destra.
+      - Un accento per gruppo permanente; pietra per i temporanei.
+      - Doodle legati al tema del gruppo (4–6), in accento al 50%.
+      - Controllare le icone a 96 e 48px e nella lista chat simulata.
+    dont:
+      - Testo o nome del gruppo sull'icona.
+      - Scene con tanti oggetti piccoli, contorni sottili, sfumature.
+      - Colori fuori dai token o accenti dei gruppi fuori dalle icone.
+      - Link di invito WhatsApp o dati personali nel repo e nelle grafiche.
+
+partners:
+  status: proposta
+  intro: >-
+    Per community partner, sponsor, sedi che ospitano eventi e soci che preparano materiali con il nostro nome.
+    Le indicazioni sul co-branding sono una **proposta**: in caso di dubbio scrivici prima di pubblicare.
+  naming:
+    - Scrivi **Salento.dev** (vedi «Come si scrive il nome»); per il link usa `https://salento.dev`.
+    - 'Citazione breve: «in collaborazione con Salento.dev» oppure «community partner: Salento.dev».'
+    - 'Per le grafiche riusate: «Grafiche di Salento.dev (https://salento.dev), CC BY 4.0».'
+  cobranding:
+    - Logo affiancato a quelli dei partner con **la stessa altezza visiva** e almeno **2X** di distanza (X = area di rispetto).
+    - Su fondo chiaro usa il logo **Console Black**; su fondo scuro il logo **Bright Mist**.
+    - Non ricolorare il logo nei colori del partner e non fonderlo con altri marchi.
+    - Non far intendere approvazione, sponsorizzazione o organizzazione da parte di Salento.dev se non concordata.
+    - Per eventi organizzati insieme, mandaci la bozza prima della stampa o della pubblicazione.
+  licence:
+    - '**Codice** del repo: [MIT](https://github.com/salento-dev/brand/blob/main/LICENSE).'
+    - '**Asset grafici** (logo, soggetti, doodle, token, immagini generate): [CC BY 4.0](https://github.com/salento-dev/brand/blob/main/LICENSE-ASSETS.md), con attribuzione.'
+    - '**Marchio escluso**: la licenza non permette di usare nome e logo per far credere a un''affiliazione o approvazione.'
+    - '**Font**: Outfit, Albert Sans e Roboto Mono sono sotto SIL Open Font License 1.1.'

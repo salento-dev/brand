@@ -11,6 +11,17 @@ assets/subjects/<nome>.svg ─▶ src/subjects.js ───┘  soggetto con i c
 
 L'SVG è composto **direttamente** (stringhe) e convertito in PNG con `@resvg/resvg-js`, senza font di sistema: stesso input → stessi byte ([ADR-0009](../04_decisioni_architetturali/0009_svg_diretto_resvg_senza_satori.md)).
 
+## Brand book e kit
+
+```
+content/brand/brand.yaml ─▶ src/brand.js (zod) ─┐
+tokens/tokens.json ─▶ src/tokens.js ─▶ src/tokens-css.js ─┼─▶ scripts/site.js ─▶ out/index.html, out/icone/, out/assets/
+assets/logo.svg ─▶ src/logo.js (varianti, PNG, avatar) ───┤                    out/brand-kit.zip (src/kit.js + src/zip.js)
+out/groups/*.png (npm run generate) ──────────────────────┘                    out/fonts/ (src/site/fonts.js)
+```
+
+Dettagli: [Brand book e kit](../06_brand_book/01_brand_book.md).
+
 ## Moduli
 
 | File | Cosa fa |
@@ -22,6 +33,11 @@ L'SVG è composto **direttamente** (stringhe) e convertito in PNG con `@resvg/re
 | `src/wallpaper.js` | composizione del wallpaper (parametri in `WALLPAPER`), seed = slug |
 | `src/groups.js` | caricamento/validazione YAML, avvisi sugli accenti ripetuti |
 | `formats/icon.js` | il formato icona: scala del soggetto, cerchio sicuro, `render(gruppo)` → SVG |
+| `src/brand.js` | carica e valida `content/brand/brand.yaml` |
+| `src/logo.js` | geometria del logo (area di rispetto), varianti SVG/PNG, avatar |
+| `src/kit.js`, `src/zip.js` | file del kit, `LEGGIMI.txt`, scrittore ZIP senza dipendenze |
+| `src/tokens-css.js` | token → custom properties CSS |
+| `src/site/` | pagine (`book.js`, `gallery.js`, `html.js`), stile (`brand.css`), font self-hosted (`fonts.js`) |
 
 ## Formati (`formats/`)
 
@@ -42,5 +58,5 @@ export default {
 ### Aggiungere un formato (fase 2: cover eventi)
 
 1. Schema dei dati in `src/schema.js` e loader per la nuova collezione (`content/events/`).
-2. Registrare la collezione in `COLLECTIONS` di `scripts/generate.js` e `scripts/gallery.js`.
+2. Registrare la collezione in `COLLECTIONS` di `scripts/generate.js` e `scripts/site.js`.
 3. `formats/event-cover.js` con `render()`; per testo e impaginazione tornerà probabilmente Satori (vedi ADR-0009).
