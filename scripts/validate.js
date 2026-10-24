@@ -1,4 +1,4 @@
-// Valida tutto: token (alias + contrasto), identità del brand, soggetti, doodle e set, gruppi, schema esportato aggiornato.
+// Valida tutto: token (alias + contrasto), identità del brand, logo pack ufficiale, soggetti, doodle e set, gruppi, schema esportato aggiornato.
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadTokens, themeFor, accentNames, iconPalette, placeholders } from '../src/tokens.js';
@@ -10,6 +10,7 @@ import { subjectMaxRadius, SAFE_RADIUS } from '../formats/icon.js';
 import { DOODLES_DIR } from '../src/paths.js';
 import { SCHEMA_FILE, schemaText } from './schema.js';
 import { loadBrand } from '../src/brand.js';
+import { checkOfficialPack, expectedFiles, VARIANT_TOKENS } from '../src/logo.js';
 
 let failures = 0;
 const fail = (where, msg) => {
@@ -50,11 +51,19 @@ try {
 // 1b. Identità e regole del brand (content/brand/brand.yaml): schema + token citati esistenti
 try {
   const brand = loadBrand();
-  const missing = brand.logo.colors.map((c) => c.token).filter((t) => !tokens?.[t]);
+  const cited = [...brand.logo.variants.flatMap((v) => [v.ink, v.background]), ...Object.values(VARIANT_TOKENS).flatMap(Object.values)];
+  const missing = [...new Set(cited)].filter((t) => !tokens?.[t]);
   if (missing.length) fail('content/brand/brand.yaml', `token inesistenti: ${missing.join(', ')}`);
   else ok(`content/brand/brand.yaml (${brand.rules.length} regole)`);
 } catch (e) {
   fail('content/brand/brand.yaml', e.message);
+}
+
+// 1c. Logo pack ufficiale (ADR-0013): 72 file, checksum, SVG sicuri e nei colori della variante
+{
+  const errors = checkOfficialPack(tokens);
+  errors.forEach((e) => fail('assets/logo/official', e));
+  if (!errors.length) ok(`assets/logo/official (${expectedFiles().length} file, SHA256SUMS, SVG sicuri)`);
 }
 
 // 2. Soggetti: lint + area sicura

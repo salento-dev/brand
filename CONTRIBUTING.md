@@ -18,7 +18,7 @@ Le modifiche a `tokens/`, `content/brand/`, `formats/`, `src/`, `assets/` e `.gi
 
 ## Aggiornare le regole del brand
 
-Questo repo è la fonte di verità del brand ([ADR-0011](docs/04_decisioni_architetturali/0011_repo_brand_fonte_di_verita.md)): testi e regole in `content/brand/brand.yaml`, valori (colori con nome, tipografia, raggi, spaziature) in `tokens/tokens.json`. Ogni regola ha un ambito (`interfaccia`, `community`, `tutti`: [ADR-0012](docs/04_decisioni_architetturali/0012_ambiti_interfaccia_e_grafiche_community.md)); attivare un colore di riserva o un nuovo accento richiede un ADR. Poi `npm run validate && npm test && npm run site` e controlla `out/index.html`. Guida: [Aggiornare le regole del brand](docs/06_brand_book/02_aggiornare_le_regole.md).
+Questo repo è la fonte di verità del brand ([ADR-0011](docs/04_decisioni_architetturali/0011_repo_brand_fonte_di_verita.md)): testi e regole in `content/brand/brand.yaml`, valori (colori con nome, tipografia, raggi, spaziature) in `tokens/tokens.json`. Ogni regola ha un ambito (`interfaccia`, `community`, `tutti`: [ADR-0012](docs/04_decisioni_architetturali/0012_ambiti_interfaccia_e_grafiche_community.md)); attivare un colore di riserva o un nuovo accento richiede un ADR. Il logo non si ridisegna: i file ufficiali del media kit sono in `assets/logo/official/` e si aggiornano solo con `npm run logo:import` ([ADR-0013](docs/04_decisioni_architetturali/0013_logo_ufficiale_dal_media_kit.md)). Poi `npm run validate && npm test && npm run site` e controlla `out/index.html`. Guida: [Aggiornare le regole del brand](docs/06_brand_book/02_aggiornare_le_regole.md).
 
 ## Aggiungi un gruppo in 5 passi
 

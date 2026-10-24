@@ -10,6 +10,7 @@ export const SUBJECTS_DIR = at('assets', 'subjects');
 export const DOODLES_DIR = at('assets', 'doodles');
 export const DOODLE_SETS_FILE = at('assets', 'doodles', 'sets.yaml');
 export const LOGO_FILE = at('assets', 'logo.svg');
+export const OFFICIAL_LOGO_DIR = at('assets', 'logo', 'official');
 export const FORMATS_DIR = at('formats');
 export const OUT_DIR = at('out');
 export const BRAND_FILE = at('content', 'brand', 'brand.yaml');

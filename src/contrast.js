@@ -24,6 +24,9 @@ export const THEME_RULES = [
   { fg: 'text', bg: 'bg', min: 4.5, why: 'testo normale (WCAG 1.4.3)' },
   { fg: 'text-muted', bg: 'bg', min: 4.5, why: 'testo secondario (WCAG 1.4.3)' },
   { fg: 'accent', bg: 'bg', min: 4.5, why: 'link in accento' },
+  { fg: 'primary', bg: 'bg', min: 4.5, why: 'Salento Cyan su Console Black (mist-950)' },
+  { fg: 'primary', bg: 'surface', min: 4.5, why: 'Salento Cyan su Panel Graphite (mist-900)' },
+  { fg: 'ink-on-light', bg: 'text', min: 4.5, why: 'Salento Dark su fondo chiaro (mist-50)' },
 ];
 
 /** Regole per ogni palette di icona (ogni accento e i temporanei): chiavi di iconPalette(). */

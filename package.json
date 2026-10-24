@@ -15,6 +15,7 @@
     "site": "node scripts/site.js",
     "gallery": "node scripts/site.js",
     "check-expired": "node scripts/check-expired.js",
+    "logo:import": "node scripts/import-logo-pack.js",
     "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {

@@ -1,11 +1,12 @@
 # 01 · Token e palette
 
-> Fonte: [`tokens/tokens.json`](../../tokens/tokens.json) (formato W3C DTCG). Decisioni: [ADR-0003](../04_decisioni_architetturali/0003_token_dtcg_allineati_al_sito.md), [ADR-0008](../04_decisioni_architetturali/0008_accento_per_gruppo.md), [ADR-0011](../04_decisioni_architetturali/0011_repo_brand_fonte_di_verita.md) (livello `brand`, tipografia, spaziature). Questo repo è la fonte di verità: il sito si allinea a questi valori.
+> Fonte: [`tokens/tokens.json`](../../tokens/tokens.json) (formato W3C DTCG). Decisioni: [ADR-0003](../04_decisioni_architetturali/0003_token_dtcg_allineati_al_sito.md), [ADR-0008](../04_decisioni_architetturali/0008_accento_per_gruppo.md), [ADR-0011](../04_decisioni_architetturali/0011_repo_brand_fonte_di_verita.md) (livello `brand`, tipografia, spaziature), [ADR-0014](../04_decisioni_architetturali/0014_palette_del_marchio_salento_cyan_e_dark.md) (colori del marchio, `semantic.primary`). Questo repo è la fonte di verità: il sito si allinea a questi valori.
 
 ## Livelli
 
 ```
 primitive                     ruoli
+color.salento.*, white,     ─▶ brand.color.*         colori del marchio (media kit): Salento Cyan, Salento Dark, White, Black
 color.*                     ─▶ brand.color.*         colori con nome e ruolo (DESIGN.md): Signal Cyan, Console Black…
 color.mist.*, color.cyan.*  ─▶ semantic.*            brand book, galleria e formati futuri (cover eventi)
 color.violet.*, fuchsia.*,  ─▶ group.icon.*          sfondo e luce delle icone dei gruppi
@@ -18,12 +19,13 @@ Le primitive Tailwind sono convertite da OKLCH (`tailwindcss/theme.css` del sito
 
 ## Colori con nome (`brand.color.*`)
 
-Alias alle primitive, importati da `DESIGN.md` del sito. In `$extensions["dev.salento"]`: `name`, `category`, `siteToken` e `designMd` (il valore originale: un test verifica che coincida con l'hex). Il ruolo è in `$description`.
+Alias alle primitive. I colori del **marchio** vengono dal media kit (ADR-0014), gli altri da `DESIGN.md` del sito. In `$extensions["dev.salento"]`: `name`, `category`, `siteToken` e `designMd` (il valore originale: un test verifica che coincida con l'hex). Il ruolo è in `$description`.
 
 | Categoria | Colori |
 |-----------|--------|
+| marchio | **Salento Cyan** `#20d0ed` (primario) · Salento Dark `#1d1e1c` (logo su chiaro) · White `#ffffff` · Black `#000000` |
 | neutri | Void Black `black` · Console Black `mist-950` · Panel Graphite `mist-900` · Control Graphite `mist-800` · Raised Graphite `mist-700` · Bracket Grey `mist-600` · Muted Mist `mist-400` · Body Mist `mist-300` · Soft Mist `mist-200` · Bright Mist `mist-50` |
-| primario | Signal Cyan `cyan-500` · Signal Cyan Deep `cyan-700` · Signal Cyan Pale `cyan-300` · Signal Cyan Wash `cyan-50` |
+| primario (sito, attuale) | Signal Cyan `cyan-500` · Signal Cyan Deep `cyan-700` · Signal Cyan Pale `cyan-300` · Signal Cyan Wash `cyan-50`: colore **attuale** dell'interfaccia del sito, da migrare a Salento Cyan |
 | riserva | Reserve Violet `violet-500` · Reserve Fuchsia `fuchsia-500` |
 | funzionali | WhatsApp Green `green-400` · WIP Amber `amber-500` |
 | community | Pietra · Pietra in ombra |
@@ -46,8 +48,12 @@ Le regole d'uso (One Signal, Reserve, Brand-Borrow…) e il loro ambito sono in 
 | `border` | `mist-800` | `#22292b` | bordi |
 | `text` | `mist-50` | `#f9fbfb` | testo |
 | `text-muted` | `mist-400` | `#9ca8ab` | testo secondario |
-| `accent` | `cyan-500` | `#00b8db` | link |
+| `primary` | `brand.color.salento-cyan` | `#20d0ed` | colore primario (Salento Cyan), solo su fondi scuri |
+| `accent` | `semantic.primary` | `#20d0ed` | link e accenti (alias di `primary`) |
+| `ink-on-light` | `brand.color.salento-dark` | `#1d1e1c` | logo e segni del marchio su fondi chiari |
 | `secondary` | `violet-500` | `#8e51ff` | riservato |
+
+Contrasto verificato da `npm run validate`: `primary` su `bg` 10.6:1 e su `surface` 9.4:1; `ink-on-light` su `text` (mist-50) 16.1:1. Salento Cyan su bianco è 1.9:1: **mai cyan su fondi chiari**.
 
 ## Icone dei gruppi
 

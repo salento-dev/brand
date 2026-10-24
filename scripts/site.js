@@ -1,7 +1,8 @@
 // Costruisce il sito pubblicato su GitHub Pages (out/):
 //   out/index.html          brand book (content/brand/brand.yaml + token)
 //   out/icone/index.html    galleria delle icone dei gruppi (serve prima `npm run generate`)
-//   out/brand-kit.zip       kit (logo, avatar, icone, token, LEGGIMI) + gli stessi file in out/kit/
+//   out/brand-kit.zip       kit (logo pack ufficiale, avatar, icone, token, LEGGIMI) + gli stessi file in out/kit/
+//   out/salentodev-logo-pack.zip  solo il logo pack ufficiale (README, SHA256SUMS, logos/)
 //   out/assets/, out/fonts/ CSS, token CSS e font self-hosted (nessuna richiesta esterna)
 import fs from 'node:fs';
 import path from 'node:path';
@@ -12,7 +13,7 @@ import { loadGroups } from '../src/groups.js';
 import { loadTokens, loadTokenTree, describeTokens } from '../src/tokens.js';
 import { tokensCss } from '../src/tokens-css.js';
 import { loadBrand } from '../src/brand.js';
-import { kitFiles, kitZip, KIT_ZIP, KIT_ROOT } from '../src/kit.js';
+import { kitFiles, kitZip, logoPackZip, KIT_ZIP, KIT_ROOT, LOGO_PACK_ZIP } from '../src/kit.js';
 import { copyFonts } from '../src/site/fonts.js';
 import { bookPage, footerHtml } from '../src/site/book.js';
 import { galleryPage, itemFiles } from '../src/site/gallery.js';
@@ -43,12 +44,12 @@ const writer = (outDir) => (rel, data) => {
   fs.writeFileSync(file, data);
 };
 
-/** Albero dei file del kit, per la pagina (cartelle e file, due livelli). */
+/** Albero dei file del kit, per la pagina (file in radice e cartelle fino a due livelli, con il conteggio). */
 function kitTree(files) {
   const dirs = new Map();
   for (const f of files) {
     const parts = f.path.split('/');
-    const dir = parts.length > 1 ? parts.slice(0, -1).join('/') + '/' : '';
+    const dir = parts.length > 1 ? parts.slice(0, Math.min(parts.length - 1, 2)).join('/') + '/' : '';
     if (!dirs.has(dir)) dirs.set(dir, []);
     dirs.get(dir).push(parts.at(-1));
   }
@@ -92,15 +93,18 @@ export async function buildSite({ outDir = OUT_DIR, log = console.log } = {}) {
   const zip = kitZip(files, build.time);
   write(KIT_ZIP, zip);
   log(`✓ out/${KIT_ZIP} (${files.length} file in ${KIT_ROOT}/, ${Math.round(zip.length / 1024)} KB) e out/kit/`);
+  const packZip = logoPackZip(build.time);
+  write(LOGO_PACK_ZIP, packZip);
+  log(`✓ out/${LOGO_PACK_ZIP} (${Math.round(packZip.length / 1024)} KB)`);
 
   // Pagine
-  const kit = { zipSize: zip.length, count: files.length, tree: kitTree(files) };
+  const kit = { zipSize: zip.length, packSize: packZip.length, count: files.length, tree: kitTree(files) };
   const ctx = { brand, tokens, described, groups, format: iconFormat, build, kit };
   write('index.html', bookPage(ctx));
   log('✓ out/index.html (brand book)');
-  write('icone/index.html', galleryPage({ formats, collections: COLLECTIONS, tokens, build, footer: footerHtml(ctx) }));
+  write('icone/index.html', galleryPage({ formats, collections: COLLECTIONS, tokens, build, footer: footerHtml(ctx, '../') }));
   log('✓ out/icone/index.html (galleria icone)');
-  return { files, zip, build };
+  return { files, zip, packZip, build };
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) await buildSite();

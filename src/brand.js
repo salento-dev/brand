@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import { load as loadYaml } from 'js-yaml';
 import { z } from 'zod';
 import { BRAND_FILE } from './paths.js';
+import { FAMILIES, VARIANTS, PADDINGS, FORMATS } from './logo.js';
 
 export const SCOPES = ['interfaccia', 'community', 'tutti'];
 export const RULE_SECTIONS = ['colori', 'tipografia', 'forme'];
@@ -12,6 +13,10 @@ const text = z.string().trim().min(1);
 const list = z.array(text).min(1);
 const url = z.url({ protocol: /^https$/ });
 const doDont = z.strictObject({ do: list, dont: list });
+const colorToken = z.string().regex(/^brand\.color\.[a-z-]+$/);
+/** Elenco con un elemento per ogni id atteso, nello stesso ordine (famiglie, varianti… del logo pack). */
+const exactly = (ids, shape) =>
+  z.array(z.strictObject({ id: z.enum(ids), ...shape })).refine((a) => a.map((x) => x.id).join() === ids.join(), `servono esattamente: ${ids.join(', ')}`);
 
 export const BrandSchema = z.strictObject({
   provenance: z.strictObject({ source: text, ref: text, imported: z.iso.date(), note: text }),
@@ -26,6 +31,12 @@ export const BrandSchema = z.strictObject({
       .refine((c) => c.every((ch) => !/chat\.whatsapp\.com/.test(ch.url)), 'niente link di invito WhatsApp: usa il sito'),
     naming: doDont,
   }),
+  descriptions: z.strictObject({
+    source: url,
+    items: z.array(z.strictObject({ id: z.string().regex(/^[a-z-]+$/), label: text, use: text, text }))
+      .min(1)
+      .refine((items) => items.every((d) => !/Salento\.Dev|Salento Dev/.test(d.text)), 'nel testo il nome si scrive Salento.dev'),
+  }),
   northStar: z.strictObject({ name: text, text: list, traits: list }),
   scopes: z.strictObject(Object.fromEntries(SCOPES.map((s) => [s, z.strictObject({ label: text, text })]))),
   rules: z.array(z.strictObject({
@@ -36,11 +47,18 @@ export const BrandSchema = z.strictObject({
     text,
   })).min(1),
   logo: z.strictObject({
+    provenance: z.strictObject({ source: text, url, pack: text, sha256: z.string().regex(/^[0-9a-f]{64}$/), imported: z.iso.date(), note: text }),
     description: text,
-    colors: z.array(z.strictObject({ token: z.string().regex(/^brand\.color\.[a-z-]+$/), use: text })).min(1),
+    families: exactly(FAMILIES, { name: text, description: text, use: text }),
+    variants: exactly(VARIANTS, { name: text, ink: colorToken, background: colorToken, on: text, description: text }),
+    paddings: exactly(PADDINGS, { name: text, description: text }),
+    formats: exactly(FORMATS, { name: text, description: text }),
+    whereToUse: z.array(z.strictObject({ where: text, family: z.enum(FAMILIES), variant: z.enum(VARIANTS).optional() })).min(1),
+    guidelines: z.array(z.strictObject({ title: text, items: list })).min(1),
     lightRule: text,
     do: list,
     dont: list,
+    rights: list,
   }),
   dosAndDonts: z.array(z.strictObject({ scope: z.enum(SCOPES), do: list, dont: list })).min(1),
   partners: z.strictObject({ status: z.enum(['proposta', 'accettata']), intro: text, naming: list, cobranding: list, licence: list }),

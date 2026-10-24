@@ -1,5 +1,5 @@
 // Mattoni HTML condivisi dalla pagina brand e dalla galleria: escape, testo inline, layout "Night Console".
-import { logoPaths } from '../logo.js';
+import { logoFile, AVATAR_SVG } from '../logo.js';
 
 export const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -11,9 +11,12 @@ export const inline = (s) =>
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g, '<a href="$2">$1</a>');
 
-/** Logo inline (decorativo se `label` è vuoto). */
-export const logo = ({ label = '', cls = 'logo' } = {}) =>
-  `<svg class="${cls}" viewBox="0 0 90 105" fill="currentColor" xmlns="http://www.w3.org/2000/svg" ${label ? `role="img" aria-label="${esc(label)}"` : 'aria-hidden="true" focusable="false"'}>${label ? `<title>${esc(label)}</title>` : ''}${logoPaths()}</svg>`;
+/** Percorso (relativo a out/) di un file del logo pack ufficiale pubblicato nel kit. */
+export const logoHref = (family, variant, padding = 'no-padding', format = 'svg') => `kit/logo-pack/${logoFile(family, variant, padding, format)}`;
+
+/** Logo ufficiale come immagine (mai ricostruito): `alt` vuoto = decorativo. */
+export const logo = ({ family = 'pictogram', variant = 'white-on-dark', padding = 'no-padding', base = '', alt = '', cls = 'logo' } = {}) =>
+  `<img class="${cls}" src="${base}${logoHref(family, variant, padding)}" alt="${esc(alt)}">`;
 
 /** Le quattro staffe d'angolo (SVG a L 11×11, tratto 1px arrotondato), come <x-ui.corners> del sito. */
 export const corners = () =>
@@ -64,7 +67,7 @@ export function page({ title, description, base = '', nav = [], navLabel = 'Sezi
 <meta name="description" content="${esc(description)}">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#000000">
-<link rel="icon" href="${base}kit/logo/avatar/salento-dev-avatar.svg" type="image/svg+xml">
+<link rel="icon" href="${base}kit/${AVATAR_SVG}" type="image/svg+xml">
 <link rel="stylesheet" href="${base}fonts/fonts.css">
 <link rel="stylesheet" href="${base}assets/tokens.css">
 <link rel="stylesheet" href="${base}assets/brand.css">
@@ -73,7 +76,7 @@ export function page({ title, description, base = '', nav = [], navLabel = 'Sezi
 <a class="skip" href="#contenuto">Vai al contenuto</a>
 <div class="panel">
   <header class="topbar">
-    <a class="brandmark" href="${base || './'}">${logo()}<span><b>Salento.dev</b><span class="slash">/</span>Brand</span></a>
+    <a class="brandmark" href="${base || './'}">${logo({ family: 'horizontal', base, alt: 'Salento.dev' })}<span><span class="slash">/</span>Brand</span></a>
     <nav class="topnav" aria-label="${esc(navLabel)}">${links}</nav>
     ${telemetry('root@salento.dev:~/brand', 'prompt')}
   </header>

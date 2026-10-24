@@ -29,9 +29,35 @@ identity:
       - '**Salento.dev** nel testo: S maiuscola, punto, `dev` minuscolo.'
       - '`salento.dev` minuscolo solo come indirizzo (dominio, URL, handle).'
       - Maiuscolo (`SALENTO.DEV`) solo dentro etichette di telemetria, dove tutto il testo è maiuscolo.
+      - >-
+        Il wordmark del logo si legge «Salento Dev»: è un elemento grafico e resta com'è. Non ricopiarlo nel
+        testo, dove il nome è sempre **Salento.dev**.
     dont:
-      - SalentoDev, Salento Dev, Salento-dev, SALENTO DEV, salento.Dev
+      - Salento.Dev, SalentoDev, Salento Dev, Salento-dev, SALENTO DEV, salento.Dev
       - Tradurre o abbreviare il nome (es. «SD», «Salento Developers»).
+
+# Descrizioni ufficiali dal media kit, adattate alla scrittura del nome (Salento.dev).
+descriptions:
+  source: https://salento.dev/sd-media-kit-2026/
+  items:
+    - id: breve
+      label: Breve
+      use: One-liner
+      text: >-
+        Salento.dev è una community tech del basso Salento dedicata a sviluppatori, professionisti digitali e
+        appassionati di tecnologia.
+    - id: media
+      label: Media
+      use: Boilerplate
+      text: >-
+        Salento.dev connette sviluppatori, professionisti IT, aziende e appassionati di tecnologia attraverso
+        meetup, workshop, talk, momenti informali di confronto e occasioni di networking sul territorio.
+    - id: lunga
+      label: Lunga
+      use: Press / partner
+      text: >-
+        Salento.dev promuove la cultura dello sviluppo software nel basso Salento, creando occasioni di incontro,
+        formazione e collaborazione tra developer, studenti, aziende, founder e professionisti digitali.
 
 northStar:
   name: The Night Console
@@ -59,7 +85,8 @@ scopes:
     label: Interfaccia
     text: >-
       Sito, questa pagina e ogni superficie «da schermo» (slide, banner, materiali con testo e layout).
-      Vale la palette del sito: neutri + Signal Cyan; riserva e prestiti funzionali solo come da regole.
+      Vale la palette del sito: neutri + **Salento Cyan** come unico accento (il sito usa ancora Signal Cyan e
+      migrerà: ADR-0014); riserva e prestiti funzionali solo come da regole.
   community:
     label: Grafiche della community
     text: >-
@@ -68,7 +95,7 @@ scopes:
       è la decisione esplicita richiesta dalla Reserve Rule (ADR-0008). Gli accenti restano dentro le icone.
   tutti:
     label: Tutti gli ambiti
-    text: Logo, nome, tipografia e tema scuro valgono ovunque.
+    text: Logo, nome, colori del marchio, tipografia e tema scuro valgono ovunque.
 
 rules:
   - id: one-signal
@@ -76,8 +103,9 @@ rules:
     name: The One Signal Rule
     scope: interfaccia
     text: >-
-      Il cyan è l'unica luce accesa. Va su etichette, link, stati e una parola per titolo, mai su sfondi pieni di
-      grandi superfici. Se una schermata ha più di una manciata di elementi cyan, uno è di troppo.
+      **Salento Cyan** (`#20D0ED`) è l'unica luce accesa. Va su etichette, link, stati e una parola per titolo,
+      mai su sfondi pieni di grandi superfici né su fondi chiari. Se una schermata ha più di una manciata di elementi
+      cyan, uno è di troppo. Il sito usa ancora Signal Cyan (`cyan-500`): la migrazione è in ADR-0014.
   - id: reserve
     section: colori
     name: The Reserve Rule
@@ -139,28 +167,126 @@ rules:
     text: >-
       L'hover di una superficie si esprime con un velo cyan al 5% o un gradino tonale, non con elevazione.
 
+# Logo ufficiale: file del logo pack del media kit in assets/logo/official/ (ADR-0013).
+# Famiglie e varianti hanno gli stessi id dei nomi dei file ufficiali.
 logo:
+  provenance:
+    source: Media kit di Salento.dev
+    url: https://salento.dev/sd-media-kit-2026/
+    pack: salentodev-logo-pack (zip, file datati 2026-05-30)
+    sha256: 247533ce4cc5285bbdc98cf0f34959c1e298c3a67f2771b0001ed691a3a2f2f7
+    imported: 2026-10-24
+    note: >-
+      File vendorizzati così come sono in `assets/logo/official/` (unica modifica: prefisso XML `ns0:` degli SVG
+      riportato al namespace di default). Checksum in `SHA256SUMS`, verificati da `npm run validate`.
   description: >-
-    Sei righe di barre orizzontali che compongono una forma a «S»: codice indentato visto da lontano.
-    Il logo è solo il simbolo; il nome si scrive accanto in Outfit.
-  colors:
-    - { token: brand.color.bright-mist, use: 'Versione principale, su fondi scuri (è il colore del logo sul sito).' }
-    - { token: brand.color.signal-cyan, use: 'Su fondi scuri, quando il logo è l''unico elemento acceso.' }
-    - { token: brand.color.console-black, use: 'Su fondi chiari di materiali di terzi (locandine dei partner, documenti stampati).' }
+    Un pittogramma di barre orizzontali che compongono una «S», codice indentato visto da lontano, e il nome.
+    Quattro famiglie, tre varianti di colore, tre formati: si usano **sempre i file ufficiali**, mai ricostruiti.
+  families:
+    - id: stacked-symbol
+      name: Logo stacked + simbolo
+      description: Versione istituzionale completa, con pittogramma e nome su due righe.
+      use: Hero, copertine, slide, pagine e materiali con spazio verticale.
+    - id: horizontal
+      name: Logo orizzontale
+      description: Versione orizzontale con il simbolo a sinistra. La variante più flessibile.
+      use: Header, footer, sponsor wall, pagine web e materiali partner.
+    - id: compact-stacked
+      name: Logo compatto stacked
+      description: Versione compatta, pittogramma sopra e nome sotto, per una presenza più contenuta.
+      use: Badge, card, layout stretti.
+    - id: pictogram
+      name: Pittogramma
+      description: Il solo simbolo modulare, quando il nome non serve o non sarebbe leggibile.
+      use: Favicon, avatar, pattern, sticker, icone e dimensioni piccole.
+  variants:
+    - id: dark-on-light
+      name: Dark on light
+      ink: brand.color.salento-dark
+      background: brand.color.white
+      on: Sfondi chiari
+      description: Logo Salento Dark su sfondo chiaro e pulito.
+    - id: white-on-dark
+      name: White on dark
+      ink: brand.color.white
+      background: brand.color.black
+      on: Sfondi scuri
+      description: Logo bianco su sfondo scuro. La versione dei nostri materiali.
+    - id: cyan-on-dark
+      name: Cyan on dark
+      ink: brand.color.salento-cyan
+      background: brand.color.black
+      on: Sfondi scuri
+      description: Logo Salento Cyan su sfondo scuro. Mai su fondi chiari.
+  paddings:
+    - id: padded
+      name: con padding
+      description: >-
+        Un piccolo margine già incluso nel file. Da preferire nei layout stretti invece di aggiungere margini
+        casuali; per le anteprime su pagina con lo sfondo impostato via HTML/CSS.
+    - id: no-padding
+      name: senza padding
+      description: Taglio stretto sul logo, quando serve allinearlo con precisione.
+  formats:
+    - { id: svg, name: SVG, description: 'Vettoriale trasparente: da preferire per web e stampa.' }
+    - { id: png, name: PNG, description: 'Trasparente, circa 2400 px sul lato lungo.' }
+    - { id: webp, name: WEBP, description: 'Con sfondo incluso: bianco per dark-on-light, nero per le varianti su scuro.' }
+  whereToUse:
+    - { where: 'Header, footer, sponsor wall, pagine web', family: horizontal }
+    - { where: 'Copertine, hero, slide, materiali verticali', family: stacked-symbol }
+    - { where: 'Badge, card, layout stretti', family: compact-stacked }
+    - { where: 'Avatar, favicon, sticker, icone, dimensioni piccole', family: pictogram }
+    - { where: 'Materiali di partner su fondo chiaro', family: horizontal, variant: dark-on-light }
+  guidelines:
+    - title: Uso consigliato
+      items:
+        - Usa sempre i file ufficiali del logo pack.
+        - Usa la versione **senza padding** quando ti serve il taglio stretto del logo.
+        - Usa la versione **con padding** quando vuoi un respiro visivo già incluso nel file.
+        - Scegli la variante di colore con il contrasto corretto rispetto allo sfondo.
+    - title: Area di rispetto
+      items:
+        - Mantieni sempre spazio libero attorno al logo.
+        - Non avvicinare testi, icone, bordi o altri marchi al perimetro del logo.
+        - Come riferimento minimo usa l'**altezza di un modulo** del pittogramma (una barra).
+        - Nei layout stretti preferisci la versione con padding invece di aggiungere margini casuali.
+    - title: Leggibilità minima
+      items:
+        - Non ridurre il nome fino a renderlo illeggibile.
+        - Per avatar, favicon e icone piccole usa il **pittogramma**.
+        - Per header, footer e sponsor wall usa preferibilmente il logo **orizzontale**.
+        - Per copertine, slide e materiali con spazio verticale usa il logo **stacked + simbolo**.
+    - title: Sfondi
+      items:
+        - Usa **dark-on-light** su sfondi chiari e puliti.
+        - Usa **white-on-dark** o **cyan-on-dark** su sfondi scuri.
+        - Evita immagini, pattern o gradienti che riducono la leggibilità del logo.
+        - Su fondi fotografici usa un'area piena o una composizione che garantisca un contrasto stabile.
   lightRule: >-
-    Il brand è solo scuro: i nostri materiali non hanno versioni chiare. Se un partner deve mettere il logo su un
-    fondo chiaro usa la versione **Console Black**, mai il logo bianco o cyan su chiaro.
+    I materiali di Salento.dev sono scuri e usano **white-on-dark** o **cyan-on-dark**. **Dark-on-light** serve
+    quando il logo finisce su un fondo chiaro di altri (locandine dei partner, documenti stampati): mai il logo
+    bianco o cyan su chiaro.
   do:
-    - Usare i file del kit, senza ridisegnare le barre.
-    - Rispettare l'area di rispetto e la dimensione minima.
-    - Scegliere la versione in base al fondo (chiaro su scuro, Console Black su chiaro).
+    - Usare i file del logo pack, senza ricostruire o ridisegnare il logo.
+    - Rispettare l'area di rispetto e scegliere la famiglia adatta allo spazio.
+    - Scegliere la variante in base allo sfondo (chiaro → dark-on-light, scuro → white-on-dark o cyan-on-dark).
   dont:
-    - Ricolorare fuori dai tre colori ammessi, o con gradienti.
-    - Deformare (allungare, schiacciare) o ruotare.
-    - Aggiungere effetti (ombre, glow, bagliori, rilievi).
-    - Disegnarlo solo con il contorno (outline).
-    - Metterlo su fondi fotografici o a basso contrasto senza un pannello scuro dietro.
-    - Inserirlo in frasi o usarlo come lettera.
+    - Deformare, inclinare, ruotare, ricostruire o ridisegnare il logo.
+    - Cambiare i colori al di fuori delle tre varianti previste.
+    - Aggiungere ombre, glow, gradienti o altri effetti.
+    - Usare screenshot o file compressi al posto degli asset ufficiali.
+    - Usare la versione cyan su fondi chiari o poco contrastati.
+    - Ricomporre pittogramma e nome a mano o riscrivere il wordmark con un altro font.
+  rights:
+    - Copyright © 2026 Salento.dev. Tutti i diritti riservati.
+    - >-
+      Il logo (tutte le famiglie e le varianti), il wordmark e il nome «Salento.dev» sono segni distintivi
+      protetti e di titolarità dei rispettivi aventi diritto. Qualsiasi utilizzo è subordinato a preventiva
+      autorizzazione e deve rispettare le linee guida ufficiali.
+    - >-
+      Il download o l'accesso al brand book, al kit o al logo pack non comporta cessione di diritti, licenze
+      implicite o autorizzazioni automatiche. Ogni uso non autorizzato, improprio o non conforme è espressamente
+      vietato.
 
 dosAndDonts:
   - scope: interfaccia
@@ -197,19 +323,21 @@ partners:
   status: proposta
   intro: >-
     Per community partner, sponsor, sedi che ospitano eventi e soci che preparano materiali con il nostro nome.
-    Le indicazioni sul co-branding sono una **proposta**: in caso di dubbio scrivici prima di pubblicare.
+    Logo e nome sono riservati: **per usarli serve la nostra autorizzazione** (scrivici). Le indicazioni sul
+    co-branding sono una **proposta**: in caso di dubbio scrivici prima di pubblicare.
   naming:
     - Scrivi **Salento.dev** (vedi «Come si scrive il nome»); per il link usa `https://salento.dev`.
     - 'Citazione breve: «in collaborazione con Salento.dev» oppure «community partner: Salento.dev».'
     - 'Per le grafiche riusate: «Grafiche di Salento.dev (https://salento.dev), CC BY 4.0».'
   cobranding:
-    - Logo affiancato a quelli dei partner con **la stessa altezza visiva** e almeno **2X** di distanza (X = area di rispetto).
-    - Su fondo chiaro usa il logo **Console Black**; su fondo scuro il logo **Bright Mist**.
+    - Usa il logo **orizzontale** del logo pack, affiancato a quelli dei partner con **la stessa altezza visiva** e almeno **due moduli** del pittogramma di distanza.
+    - Su fondo chiaro usa **dark-on-light**; su fondo scuro **white-on-dark** (o **cyan-on-dark**).
     - Non ricolorare il logo nei colori del partner e non fonderlo con altri marchi.
     - Non far intendere approvazione, sponsorizzazione o organizzazione da parte di Salento.dev se non concordata.
     - Per eventi organizzati insieme, mandaci la bozza prima della stampa o della pubblicazione.
   licence:
+    - '**Logo, wordmark e nome «Salento.dev»**: tutti i diritti riservati; ogni uso richiede l''autorizzazione preventiva e il rispetto delle linee guida (vedi «Diritti» nella sezione Logo).'
+    - '**Altri asset grafici** (soggetti, doodle, icone dei gruppi, token, testi del brand book): [CC BY 4.0](https://github.com/salento-dev/brand/blob/main/LICENSE-ASSETS.md), con attribuzione.'
+    - '**Icone dei gruppi**: si possono usare per i gruppi e la comunicazione di Salento.dev; il logo stampato al loro interno resta riservato.'
     - '**Codice** del repo: [MIT](https://github.com/salento-dev/brand/blob/main/LICENSE).'
-    - '**Asset grafici** (logo, soggetti, doodle, token, immagini generate): [CC BY 4.0](https://github.com/salento-dev/brand/blob/main/LICENSE-ASSETS.md), con attribuzione.'
-    - '**Marchio escluso**: la licenza non permette di usare nome e logo per far credere a un''affiliazione o approvazione.'
     - '**Font**: Outfit, Albert Sans e Roboto Mono sono sotto SIL Open Font License 1.1.'
