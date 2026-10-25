@@ -66,10 +66,10 @@ Contrasto verificato da `npm run validate`: `primary` su `bg` 10.6:1 e su `surfa
 
 | Nome | `accent` | `accent-dark` | Contrasto accento / sfondo | Gruppo attuale |
 |------|----------|---------------|----------------------------|----------------|
-| `cyan` | cyan-400 `#00d3f2` | cyan-700 `#007595` | 9.60:1 | AI Corner |
+| `cyan` | cyan-400 `#00d3f2` | cyan-700 `#007595` | 9.60:1 | @include |
 | `violet` | violet-400 `#a684ff` | violet-700 `#7008e7` | 6.09:1 | Tavola Rotonda |
 | `fuchsia` | fuchsia-400 `#ed6aff` | fuchsia-700 `#a800b7` | 6.71:1 | Dev Break |
-| `emerald` | emerald-400 `#00d492` | emerald-700 `#007a55` | 8.96:1 | @include |
+| `emerald` | emerald-400 `#00d492` | emerald-700 `#007a55` | 8.96:1 | AI Corner |
 | `lime` | **lime-500** `#7ccf00` | lime-700 `#497d00` | 8.92:1 | Mercatino |
 | *temporanei* | pietra `#e2b45a` | pietra-dark `#976403` | 9.03:1 | tutti i temporanei |
 

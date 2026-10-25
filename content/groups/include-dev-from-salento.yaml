@@ -3,6 +3,6 @@ name: "@include dev from salento"
 shortName: "@include"
 kind: permanent
 subject: code-window
-accent: emerald
+accent: cyan
 doodles: [lighthouse, git-branch, terminal, waves]
 description: Il gruppo tecnico principale della community.

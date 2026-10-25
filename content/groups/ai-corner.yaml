@@ -3,6 +3,6 @@ name: AI Corner
 shortName: AI Corner
 kind: permanent
 subject: robot
-accent: cyan
+accent: emerald
 doodles: [chip, brain, sparkles, lightbulb, code, terminal]
 description: Intelligenza artificiale, LLM, agenti e strumenti per sviluppatori.

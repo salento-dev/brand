@@ -42,8 +42,8 @@ Tre toni + sfondo, tutti dai token ([Token](../01_design_system/01_token.md)):
 |--------|----------|----------|
 | Dev Break | `fuchsia` | `coffee-cup` |
 | Tavola Rotonda | `violet` | `round-table` |
-| AI Corner | `cyan` | `robot` |
-| @include | `emerald` | `code-window` |
+| AI Corner | `emerald` | `robot` |
+| @include | `cyan` | `code-window` |
 | Mercatino | `lime` | `market-stall` |
 | temporanei (trasferte, eventi) | sempre **pietra** (campo `accent` vietato) | es. `train` |
 
