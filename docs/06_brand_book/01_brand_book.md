@@ -30,7 +30,7 @@ out/icone/index.html      galleria delle icone (lista chat simulata, 640/96/48, 
 out/brand-kit.zip         kit completo (cartella salento-dev-brand-kit/)
 out/salentodev-logo-pack.zip  solo il logo pack ufficiale (cartella salentodev-logo-pack/)
 out/kit/…                 gli stessi file del kit, scaricabili uno per uno
-out/assets/               brand.css (stile della pagina) e tokens.css (generato dai token)
+out/assets/               brand.css (stile della pagina), tokens.css (generato dai token) e dots.svg (pattern a puntini)
 out/fonts/                Outfit, Albert Sans, Roboto Mono (woff2 variabili, OFL) + fonts.css
 ```
 

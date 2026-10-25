@@ -10,6 +10,7 @@ Le regole del brand si cambiano **in questo repo** con una PR (ADR-0011). Le mod
 | un colore, il ruolo o il nome di un colore | `tokens/tokens.json` (`color.*` per il valore, `brand.color.*` per nome/ruolo/categoria) | primitive con l'OKLCH in `$extensions`: un test verifica hex = OKLCH |
 | la gerarchia tipografica, raggi, spaziature | `tokens/tokens.json` (`typography.*`, `radius.*`, `spacing.*`) | la pagina li legge da `tokens.css` |
 | impaginazione o stile della pagina | `src/site/book.js`, `src/site/brand.css` | solo variabili dei token nel CSS, niente colori scritti a mano |
+| il pattern a puntini del telaio | `src/site/pattern.js` (griglia e puntini accesi), `brand.color.pattern-sand` | ricostruito da `resources/images/dots-pattern-15.png` del sito: se il sito cambia la tile, aggiorna `LIT_DOTS` |
 | contenuto del kit o del LEGGIMI | `src/kit.js`, `src/logo.js` | |
 | il logo (nuova versione del media kit) | `npm run logo:import -- <zip estratto>` → `assets/logo/official/` | mai modificare i file a mano; aggiorna `logo.provenance` in `brand.yaml` e, se serve, `assets/logo/official/README.md`. La PR mostra i checksum cambiati |
 | descrizioni ufficiali | `brand.yaml` → `descriptions` | nome sempre «Salento.dev» (lo schema rifiuta «Salento.Dev») |

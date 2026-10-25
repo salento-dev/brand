@@ -45,7 +45,7 @@ test('sito: pagine, kit e nessuna risorsa esterna', async () => {
   const out = tmp();
   await buildSite({ outDir: out, log: () => {} });
 
-  for (const f of ['index.html', 'icone/index.html', KIT_ZIP, LOGO_PACK_ZIP, 'assets/brand.css', 'assets/tokens.css', 'fonts/fonts.css',
+  for (const f of ['index.html', 'icone/index.html', KIT_ZIP, LOGO_PACK_ZIP, 'assets/brand.css', 'assets/tokens.css', 'assets/dots.svg', 'fonts/fonts.css',
     'kit/LEGGIMI.txt', 'kit/logo-pack/README.md', 'kit/logo-pack/SHA256SUMS', 'kit/logo-pack/logos/svg/padded/salentodev-horizontal-white-on-dark-padded.svg',
     'kit/avatar/salentodev-avatar.svg', 'kit/avatar/salentodev-avatar-1024.png', 'kit/token/tokens.json']) {
     assert.ok(fs.existsSync(path.join(out, f)), `manca ${f}`);

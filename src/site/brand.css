@@ -14,6 +14,8 @@
   --soft: var(--brand-color-soft-mist);
   --bright: var(--brand-color-bright-mist);
   --signal: var(--brand-color-salento-cyan); /* colore primario del brand (ADR-0014) */
+  --dots: url(dots.svg); /* pattern del telaio, come quello del sito: generato da src/site/pattern.js */
+  --dots-size: 144px;
   --tint: color-mix(in oklab, var(--signal) 5%, transparent);
   --r: var(--radius-xs);
   --pad-x: 1.5rem;
@@ -30,11 +32,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 body {
   margin: 0;
   background-color: var(--frame);
-  background-image:
-    radial-gradient(circle, color-mix(in srgb, var(--bright) 9%, transparent) 1.2px, transparent 1.8px),
-    radial-gradient(circle, color-mix(in srgb, var(--bright) 16%, transparent) 1.4px, transparent 2px);
-  background-size: 12px 12px, 60px 36px;
-  background-position: 0 0, 6px 6px;
+  background-image: var(--dots);
+  background-size: var(--dots-size);
   color: var(--body);
   font-family: var(--text);
   font-size: var(--typography-body-font-size);
@@ -156,8 +155,8 @@ h4 { font-size: 1rem; color: var(--bright); }
 .hero-logo {
   position: relative; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid var(--control); border-radius: var(--r);
   background-color: var(--frame);
-  background-image: radial-gradient(circle, color-mix(in srgb, var(--bright) 12%, transparent) 1.2px, transparent 1.8px);
-  background-size: 14px 14px;
+  background-image: var(--dots);
+  background-size: var(--dots-size);
 }
 .hero-logo .corner { color: var(--signal); width: 14px; height: 14px; margin: -1px; }
 .hero-logo .logo.big { width: 72%; height: auto; }
@@ -355,7 +354,7 @@ table.where td, table.where th { vertical-align: middle; }
 .status.past { --c: var(--raised); color: var(--muted); }
 .cat { background: var(--control); color: color-mix(in srgb, var(--soft) 70%, transparent); padding: 0 8px; height: 1.5rem; display: inline-flex; align-items: center; border-radius: var(--r); }
 @keyframes ping { 75%, 100% { transform: scale(2.4); opacity: 0; } }
-.dots { background-color: var(--frame); background-image: radial-gradient(circle, color-mix(in srgb, var(--bright) 14%, transparent) 1.2px, transparent 1.8px); background-size: 12px 12px; }
+.dots { background-color: var(--frame); background-image: var(--dots); background-size: var(--dots-size); }
 .mini-panel { width: 60%; height: 70%; background: var(--panel); border: 1px solid var(--control); display: grid; place-items: center; }
 .joints { flex-direction: column; gap: 2.5rem; padding: 0 2rem; }
 .joint-line { position: relative; width: 100%; height: 1px; background: var(--control); }

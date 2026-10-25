@@ -3,7 +3,7 @@
 //   out/icone/index.html    galleria delle icone dei gruppi (serve prima `npm run generate`)
 //   out/brand-kit.zip       kit (logo pack ufficiale, avatar, icone, token, LEGGIMI) + gli stessi file in out/kit/
 //   out/salentodev-logo-pack.zip  solo il logo pack ufficiale (README, SHA256SUMS, logos/)
-//   out/assets/, out/fonts/ CSS, token CSS e font self-hosted (nessuna richiesta esterna)
+//   out/assets/, out/fonts/ CSS, token CSS, pattern a puntini e font self-hosted (nessuna richiesta esterna)
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -15,6 +15,7 @@ import { tokensCss } from '../src/tokens-css.js';
 import { loadBrand } from '../src/brand.js';
 import { kitFiles, kitZip, logoPackZip, KIT_ZIP, KIT_ROOT, LOGO_PACK_ZIP } from '../src/kit.js';
 import { copyFonts } from '../src/site/fonts.js';
+import { dotsSvg } from '../src/site/pattern.js';
 import { bookPage, footerHtml } from '../src/site/book.js';
 import { galleryPage, itemFiles } from '../src/site/gallery.js';
 import { OUT_DIR, TOKENS_FILE, SITE_DIR, ROOT } from '../src/paths.js';
@@ -77,6 +78,7 @@ export async function buildSite({ outDir = OUT_DIR, log = console.log } = {}) {
   const cssText = tokensCss(described, { header: `Token Salento.dev @ ${build.commit}` });
   write('assets/tokens.css', cssText);
   write('assets/brand.css', fs.readFileSync(path.join(SITE_DIR, 'brand.css')));
+  write('assets/dots.svg', dotsSvg(tokens['brand.color.pattern-sand']));
   copyFonts(path.join(outDir, 'fonts'));
 
   // Kit: icone dei gruppi attivi già generate
